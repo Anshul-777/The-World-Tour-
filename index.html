@@ -1,0 +1,3538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorldTour - Explore the World Through Stories</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    /* Base Styles */
+    :root {
+      --primary: #8b5cf6;
+      --primary-light: #a78bfa;
+      --primary-dark: #7c3aed;
+      --accent: #ec4899;
+      --background: #0f172a;
+      --background-light: #f8fafc;
+      --text: #1f2937;
+      --text-light: #e5e7eb;
+      --text-light-mode: #1f2937;
+      --muted: #6b7280;
+      --muted-light: #9ca3af;
+      --muted-light-mode: #64748b;
+      --border: #374151;
+      --border-light: #e2e8f0;
+      --card-bg: rgba(31, 41, 55, 0.5);
+      --card-bg-light: rgba(255, 255, 255, 0.9);
+      --header-bg: rgba(17, 24, 39, 0.8);
+      --header-bg-light: rgba(248, 250, 252, 0.9);
+    }
+
+    .light-mode {
+      --background: var(--background-light);
+      --card-bg: var(--card-bg-light);
+      --header-bg: var(--header-bg-light);
+      --text-light: var(--text-light-mode);
+      --muted-light: var(--muted-light-mode);
+      --border: var(--border-light);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: var(--background);
+      color: var(--text-light);
+      line-height: 1.5;
+      min-height: 100vh;
+      transition: background-color 0.3s ease;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    a {
+      color: var(--primary-light);
+      text-decoration: none;
+    }
+
+    /* Layout */
+    .app {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      color: white;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--primary-light);
+      color: var(--primary-light);
+    }
+
+    .btn-ghost:hover {
+      background-color: rgba(139, 92, 246, 0.1);
+    }
+
+    .btn-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-send {
+      background-color: var(--primary);
+      color: white;
+      border-radius: 50%;
+      width: 2.25rem;
+      height: 2.25rem;
+      padding: 0;
+    }
+
+    .btn-large {
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary-light);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background-color: var(--header-bg);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      position: relative;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-icon {
+      position: relative;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-glow {
+      position: absolute;
+      inset: 0;
+      background-color: var(--primary);
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: glow 2s infinite alternate;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(to right, var(--primary-light), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover .logo-text {
+      transform: scale(1.05);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .navigation-container {
+      border-top: 1px solid rgba(139, 92, 246, 0.2);
+      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+      padding: 0.75rem 0;
+      margin: 0.25rem 0;
+    }
+
+    .main-nav {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      padding: 0.5rem 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .main-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      position: relative;
+      color: var(--text-light);
+      white-space: nowrap;
+      overflow: visible;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--primary);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: white;
+    }
+
+    .light-mode .nav-link:hover {
+      color: var(--primary-dark);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0;
+      background-color: var(--primary-dark);
+      z-index: -1;
+      border-radius: 0.375rem;
+      transition: height 0.3s ease;
+    }
+
+    .nav-link:hover::before {
+      height: 100%;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      min-height: 500px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(to bottom, #1e1b4b, #4c1d95);
+      padding: 4rem 0;
+      overflow: hidden;
+    }
+
+    .light-mode .hero-section {
+      background: linear-gradient(to bottom, #c4b5fd, #8b5cf6);
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('https://source.unsplash.com/random/1600x900/?galaxy') no-repeat center center;
+      background-size: cover;
+      opacity: 0.2;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      color: white;
+    }
+
+    .hero-description {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    /* Blog Cards */
+    .blogs-section {
+      padding: 4rem 0;
+      background-color: var(--background);
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      color: var(--text-light);
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      color: var(--muted-light);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .blog-card {
+      border-radius: 0.5rem;
+      overflow: hidden;
+      background-color: var(--card-bg);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      border-color: rgba(139, 92, 246, 0.4);
+    }
+
+    .blog-image {
+      position: relative;
+      height: 12rem;
+      overflow: hidden;
+    }
+
+    .blog-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .blog-card:hover .blog-image img {
+      transform: scale(1.1);
+    }
+
+    .blog-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+      opacity: 0.7;
+    }
+
+    .blog-category {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      background-color: rgba(139, 92, 246, 0.8);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      z-index: 1;
+    }
+
+    .blog-content {
+      padding: 1.25rem;
+    }
+
+    .blog-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted-light);
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .blog-views {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .blog-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
+      color: var(--text-light);
+    }
+
+    .blog-card:hover .blog-title {
+      color: var(--primary-light);
+    }
+
+    .blog-excerpt {
+      color: var(--muted-light);
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .blog-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .blog-author {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .author-avatar {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .author-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-light);
+    }
+
+    .read-more {
+      color: var(--primary-light);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .read-more:hover {
+      color: var(--accent);
+    }
+
+    .section-footer {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    /* Features */
+    .features-section {
+      padding: 5rem 0;
+      background: linear-gradient(to bottom, #111827, #4c1d95, #111827);
+      position: relative;
+    }
+
+    .light-mode .features-section {
+      background: linear-gradient(to bottom, #f1f5f9, #c4b5fd, #f1f5f9);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .feature-card {
+      background-color: rgba(31, 41, 55, 0.5);
+      backdrop-filter: blur(8px);
+      border-radius: 0.75rem;
+      padding: 2rem;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .light-mode .feature-card {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .feature-card:hover {
+      background-color: rgba(31, 41, 55, 0.8);
+      border-color: rgba(139, 92, 246, 0.4);
+      transform: translateY(-5px);
+    }
+
+    .light-mode .feature-card:hover {
+      background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    .feature-icon {
+      background-color: rgba(124, 58, 237, 0.3);
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-icon i {
+      font-size: 1.5rem;
+      color: var(--primary-light);
+    }
+
+    .feature-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: white;
+    }
+
+    .light-mode .feature-title {
+      color: var(--text);
+    }
+
+    .feature-description {
+      color: var(--muted-light);
+      margin-bottom: 1.25rem;
+    }
+
+    /* About Page */
+    .about-section {
+      padding: 4rem 0;
+      position: relative;
+    }
+
+    .about-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .team-section {
+      margin-bottom: 4rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .team-card {
+      background-color: var(--card-bg);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .team-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .team-image {
+      height: 15rem;
+      overflow: hidden;
+    }
+
+    .team-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .team-content {
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .team-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-light);
+    }
+
+    .team-role {
+      color: var(--primary-light);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .team-bio {
+      color: var(--muted-light);
+      font-size: 0.875rem;
+    }
+
+    .mission-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .mission-content, .vision-content {
+      padding: 2rem;
+      background-color: var(--card-bg);
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .mission-title, .vision-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-light);
+    }
+
+    .mission-title i, .vision-title i {
+      color: var(--primary-light);
+    }
+
+    /* Help Page */
+    .help-section {
+      padding: 4rem 0;
+      position: relative;
+    }
+
+    .help-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .faq-section {
+      margin-bottom: 4rem;
+    }
+
+    .faq-item {
+      background-color: var(--card-bg);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .faq-question i {
+      transition: transform 0.3s ease;
+    }
+
+    .faq-answer {
+      margin-top: 1rem;
+      display: none;
+      color: var(--muted-light);
+    }
+
+    .faq-item.active .faq-question i {
+      transform: rotate(180deg);
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    .feedback-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .feedback-form {
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: 0.5rem;
+    }
+
+    .rating-stars {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .star {
+      font-size: 1.5rem;
+      color: #d1d5db;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .star.active, .star:hover {
+      color: #fbbf24;
+    }
+
+    .contact-info {
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: 0.5rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background-color: rgba(139, 92, 246, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-icon i {
+      color: var(--primary-light);
+      font-size: 1.25rem;
+    }
+
+    /* Community Section */
+    .community-section {
+      padding: 4rem 0;
+      position: relative;
+    }
+
+    .community-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .chat-container {
+      background-color: var(--card-bg);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-header {
+      padding: 1rem 1.5rem;
+      background-color: rgba(139, 92, 246, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .chat-title {
+      font-weight: 700;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chat-title i {
+      color: var(--primary-light);
+    }
+
+    .chat-body {
+      padding: 1.5rem;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .chat-message {
+      display: flex;
+      margin-bottom: 1.5rem;
+    }
+
+    .chat-avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
+
+    .chat-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .chat-content {
+      background-color: rgba(55, 65, 81, 0.5);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-top-left-radius: 0;
+      max-width: 80%;
+    }
+
+    .light-mode .chat-content {
+      background-color: rgba(226, 232, 240, 0.5);
+    }
+
+    .chat-name {
+      font-weight: 700;
+      color: var(--primary-light);
+      margin-bottom: 0.25rem;
+    }
+
+    .chat-text {
+      color: var(--text-light);
+    }
+
+    .chat-time {
+      font-size: 0.75rem;
+      color: var(--muted-light);
+      margin-top: 0.5rem;
+      text-align: right;
+    }
+
+    .chat-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid rgba(139, 92, 246, 0.2);
+      display: flex;
+      gap: 1rem;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 0.375rem;
+      background-color: rgba(55, 65, 81, 0.2);
+      color: var(--text-light);
+      resize: none;
+    }
+
+    .light-mode .chat-input {
+      background-color: rgba(226, 232, 240, 0.2);
+      color: var(--text);
+    }
+
+    /* Travel Assistant */
+    .travel-assistant {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      z-index: 50;
+    }
+
+    .chat-button {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    .chat-button i {
+      font-size: 1.5rem;
+    }
+
+    .chat-button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .assistant-window {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 20rem;
+      height: 28rem;
+      background-color: #1f2937;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .light-mode .assistant-window {
+      background-color: #ffffff;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .assistant-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background-color: rgba(139, 92, 246, 0.1);
+      border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+    }
+
+    .assistant-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .assistant-avatar {
+      width: 2rem;
+      height: 2rem;
+      background-color: rgba(139, 92, 246, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .assistant-avatar i {
+      color: var(--primary-light);
+      font-size: 1rem;
+    }
+
+    .assistant-controls {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .btn-minimize, .btn-close {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background-color: transparent;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-minimize:hover, .btn-close:hover {
+      background-color: rgba(139, 92, 246, 0.1);
+    }
+
+    .assistant-body {
+      flex: 1;
+      overflow: hidden;
+      padding: 1rem;
+    }
+
+    .assistant-messages {
+      height: 100%;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .message {
+      display: flex;
+      margin-bottom: 1rem;
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .message-content {
+      max-width: 85%;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      white-space: pre-wrap;
+      font-size: 0.875rem;
+    }
+
+    .message.assistant .message-content {
+      background-color: #374151;
+      color: white;
+    }
+
+    .light-mode .message.assistant .message-content {
+      background-color: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .message.user .message-content {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .assistant-footer {
+      padding: 0.75rem;
+      border-top: 1px solid rgba(139, 92, 246, 0.1);
+    }
+
+    .assistant-form {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .assistant-input {
+      flex: 1;
+      resize: none;
+      border: 1px solid #374151;
+      border-radius: 0.375rem;
+      padding: 0.5rem;
+      min-height: 2.25rem;
+      font-family: inherit;
+      font-size: 0.875rem;
+      background-color: #1f2937;
+      color: white;
+    }
+
+    .light-mode .assistant-input {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      color: #1f2937;
+    }
+
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .typing-indicator span {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      animation: typing 1s infinite ease-in-out alternate;
+    }
+
+    .typing-indicator span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #111827;
+      padding: 3rem 0;
+      border-top: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .light-mode .footer {
+      background-color: #f3f4f6;
+      border-top: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .footer-column h3 {
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+
+    .light-mode .footer-column h3 {
+      color: #1f2937;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: var(--muted-light);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-light);
+    }
+
+    .footer-bottom {
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--muted-light);
+      font-size: 0.875rem;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .light-mode .modal-overlay {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background-color: #1f2937;
+      border-radius: 0.5rem;
+      width: 100%;
+      max-width: 500px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+    }
+
+    .light-mode .modal {
+      background-color: #ffffff;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .light-mode .modal-title {
+      color: #1f2937;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--muted-light);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-light);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.625rem;
+      border: 1px solid #374151;
+      border-radius: 0.375rem;
+      background-color: #111827;
+      color: white;
+      font-family: inherit;
+    }
+
+    .light-mode .form-input {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      color: #1f2937;
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-error {
+      color: #ef4444;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .tab-buttons {
+      display: flex;
+      border-bottom: 1px solid #374151;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-button {
+      padding: 0.75rem 1rem;
+      background: none;
+      border: none;
+      color: var(--muted-light);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-button.active {
+      color: var(--primary-light);
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .vr-placeholder {
+      background-color: rgba(31, 41, 55, 0.8);
+      padding: 2rem;
+      text-align: center;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .light-mode .vr-placeholder {
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .vr-placeholder i {
+      font-size: 4rem;
+      color: var(--primary-light);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .vr-placeholder h3 {
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .light-mode .vr-placeholder h3 {
+      color: #1f2937;
+    }
+
+    .vr-placeholder p {
+      color: var(--muted-light);
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* Section Content */
+    .section-content {
+      display: none;
+    }
+
+    .section-content.active {
+      display: block;
+    }
+
+    /* Cosmic Particles */
+    .cosmic-particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cosmic-particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      animation: twinkle 4s infinite alternate;
+    }
+
+    /* Animations */
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 5px 2px rgba(139, 92, 246, 0.3);
+      }
+      to {
+        box-shadow: 0 0 10px 5px rgba(139, 92, 246, 0.6);
+      }
+    }
+
+    @keyframes twinkle {
+      0% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0.8;
+        transform: scale(1.5);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+      50% {
+        transform: scale(1.05);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+    }
+
+    @keyframes typing {
+      0% {
+        opacity: 0.3;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .cosmic-pulse {
+      animation: pulse 3s infinite;
+    }
+
+    /* Toast notifications */
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast {
+      background-color: #1f2937;
+      color: white;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 300px;
+      animation: slideIn 0.3s ease, fadeOut 0.3s 2.7s ease forwards;
+    }
+
+    .light-mode .toast {
+      background-color: #ffffff;
+      color: #1f2937;
+    }
+
+    .toast.success {
+      border-left: 4px solid #10b981;
+    }
+
+    .toast.error {
+      border-left: 4px solid #ef4444;
+    }
+
+    .toast.warning {
+      border-left: 4px solid #f59e0b;
+    }
+
+    .toast.info {
+      border-left: 4px solid #3b82f6;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+      .main-nav {
+        gap: 1.5rem;
+      }
+      
+      .hero-title {
+        font-size: 2.25rem;
+      }
+      
+      .features-grid, .blog-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .assistant-window {
+        width: calc(100vw - 2rem);
+        right: -1rem;
+      }
+
+      .mission-section {
+        grid-template-columns: 1fr;
+      }
+
+      .feedback-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .header-top {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .auth-buttons {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="app">
+    <!-- Header Section -->
+    <header class="header">
+      <div class="container">
+        <!-- Upper row with logo and user controls -->
+        <div class="header-top">
+          <a href="#" class="logo">
+            <div class="logo-icon">
+              <div class="logo-glow"></div>
+              <i class='bx bx-globe'></i>
+            </div>
+            <span class="logo-text">WorldTour</span>
+          </a>
+          
+          <div class="header-controls">
+            <button class="btn btn-icon" id="theme-toggle">
+              <i class='bx bx-moon'></i>
+            </button>
+            
+            <div class="auth-buttons" id="auth-buttons">
+              <button class="btn btn-ghost" id="login-btn">Login</button>
+              <button class="btn btn-primary" id="signup-btn">Sign Up</button>
+            </div>
+            
+            <div class="user-nav" id="user-nav" style="display: none;">
+              <div class="user-dropdown">
+                <div class="user-dropdown-trigger">
+                  <span id="user-name">User</span>
+                  <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="user-dropdown-menu">
+                  <a href="#profile" class="dropdown-item">
+                    <i class='bx bx-user'></i> Profile
+                  </a>
+                  <a href="#create-blog" class="dropdown-item">
+                    <i class='bx bx-edit'></i> Create Blog
+                  </a>
+                  <button id="logout-btn" class="dropdown-item">
+                    <i class='bx bx-log-out'></i> Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Two-row navigation -->
+        <div class="navigation-container">
+          <nav class="main-nav row-1">
+            <a href="#home" class="nav-link" data-section="home">Home</a>
+            <a href="#features" class="nav-link" data-section="features">Features</a>
+            <a href="#blogs" class="nav-link" data-section="blogs">Blogs</a>
+            <a href="#vr-tours" class="nav-link" data-section="vr-tours">Virtual Reality</a>
+          </nav>
+          
+          <nav class="main-nav row-2">
+            <a href="#community" class="nav-link" data-section="community">Community</a>
+            <a href="#articles" class="nav-link" data-section="articles">Articles</a>
+            <a href="#about" class="nav-link" data-section="about">About</a>
+            <a href="#help" class="nav-link" data-section="help">Help</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+      <!-- Home Section -->
+      <section id="home" class="section-content active">
+        <!-- Hero Section -->
+        <section class="hero-section">
+          <div class="container">
+            <div class="hero-content">
+              <h1 class="hero-title">Explore the World Through Stories</h1>
+              <p class="hero-description">Discover captivating travel experiences and immersive virtual reality tours from around the globe</p>
+              <div class="hero-buttons">
+                <button class="btn btn-primary" id="read-blogs-btn">Explore the Stories</button>
+                <button class="btn btn-outline" id="create-blog-btn">Share your Experiences</button>
+                <button class="btn btn-outline" id="vr-button">Virtual Reality</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Circulating Blogs Section -->
+        <section class="blogs-section">
+          <div class="container">
+            <div class="section-header">
+              <h2>Featured Travel Blogs</h2>
+              <p>Discover captivating stories and travel guides from our community of passionate explorers</p>
+            </div>
+            
+            <div class="blog-grid" id="rotating-blogs">
+              <!-- Blog cards will be dynamically inserted here by JavaScript -->
+            </div>
+            
+            <div class="section-footer">
+              <button class="btn btn-primary btn-large" id="explore-blogs-btn">
+                Explore All Blogs <i class='bx bx-right-arrow-alt'></i>
+              </button>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="features-section">
+          <div class="container">
+            <div class="section-header">
+              <h2>Explore Our Features</h2>
+              <p>Discover the unique features that make our travel platform the perfect companion for your global adventures</p>
+            </div>
+            
+            <div class="features-grid" id="home-features-grid">
+              <!-- Feature cards will be dynamically inserted here by JavaScript -->
+            </div>
+            
+            <div class="section-footer">
+              <button class="btn btn-primary btn-large" id="learn-more-btn">
+                Learn More <i class='bx bx-right-arrow-alt'></i>
+              </button>
+            </div>
+          </div>
+        </section>
+        
+        <!-- VR Tours Section -->
+        <section class="blogs-section">
+          <div class="container">
+            <div class="section-header">
+              <h2>Virtual Reality Tours</h2>
+              <p>Experience immersive 360° tours of breathtaking destinations from the comfort of your home</p>
+            </div>
+
+            <div class="vr-placeholder">
+              <i class='bx bx-headphone'></i>
+              <h3>Coming Soon: Immersive Virtual Reality Tours</h3>
+              <p>We're working hard to bring you captivating 360° virtual tours of the world's most beautiful destinations. Soon, you'll be able to explore iconic landmarks, hidden gems, and breathtaking landscapes without leaving your home.</p>
+              <button class="btn btn-primary" id="vr-notify-btn">Notify Me When Available</button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features" class="section-content">
+        <section class="features-section">
+          <div class="container">
+            <div class="section-header">
+              <h2>World Tour Features</h2>
+              <p>Discover the unique features that make our travel platform the perfect companion for your global adventures</p>
+            </div>
+            
+            <div class="features-grid" id="features-grid">
+              <!-- Feature cards will be populated by JavaScript -->
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Blogs Section -->
+      <section id="blogs" class="section-content">
+        <section class="blogs-section">
+          <div class="container">
+            <div class="section-header">
+              <h2>Travel Blogs</h2>
+              <p>Explore travel stories and experiences from around the world</p>
+            </div>
+            
+            <div class="blog-grid" id="all-blogs">
+              <!-- Blog cards will be populated by JavaScript -->
+            </div>
+
+            <div class="section-footer">
+              <button class="btn btn-primary" id="create-blog-btn-2">
+                Share Your Experience <i class='bx bx-edit'></i>
+              </button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- VR Tours Section -->
+      <section id="vr-tours" class="section-content">
+        <section class="blogs-section">
+          <div class="container">
+            <div class="section-header">
+              <h2>Virtual Reality Tours</h2>
+              <p>Experience immersive 360° tours of breathtaking destinations</p>
+            </div>
+
+            <div class="vr-placeholder">
+              <i class='bx bx-headphone'></i>
+              <h3>Coming Soon: Immersive Virtual Reality Tours</h3>
+              <p>We're working hard to bring you captivating 360° virtual tours of the world's most beautiful destinations. Soon, you'll be able to explore iconic landmarks, hidden gems, and breathtaking landscapes without leaving your home.</p>
+              <p>Our VR tours will feature three different interactive viewpoints for each location, allowing you to experience these amazing places from multiple perspectives.</p>
+              <button class="btn btn-primary" id="vr-notify-btn-2">Notify Me When Available</button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Community Section -->
+      <section id="community" class="section-content">
+        <section class="community-section">
+          <div class="container">
+            <div class="community-header">
+              <h2>Travel Community</h2>
+              <p>Connect with fellow travelers and share your experiences</p>
+            </div>
+
+            <div class="chat-container">
+              <div class="chat-header">
+                <div class="chat-title">
+                  <i class='bx bx-group'></i>
+                  <span>Global Travelers Chat</span>
+                </div>
+                <div>
+                  <span>23 Online</span>
+                </div>
+              </div>
+              <div class="chat-body" id="community-chat">
+                <!-- Chat messages will be populated by JavaScript -->
+              </div>
+              <div class="chat-footer">
+                <textarea class="chat-input" placeholder="Type your message here..." id="community-input"></textarea>
+                <button class="btn btn-primary" id="send-message-btn">
+                  <i class='bx bx-send'></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Articles Section -->
+      <section id="articles" class="section-content">
+        <section class="blogs-section">
+          <div class="container">
+            <div class="section-header">
+              <h2>Travel Articles</h2>
+              <p>Curated articles about travel tips, destination guides, and cultural insights</p>
+            </div>
+            
+            <div class="blog-grid" id="articles-grid">
+              <!-- Article cards will be populated by JavaScript -->
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="section-content">
+        <section class="about-section">
+          <div class="container">
+            <div class="about-header">
+              <h2>About World Tour</h2>
+              <p>Learn about our mission, vision, and the team behind World Tour</p>
+            </div>
+
+            <div class="mission-section">
+              <div class="mission-content">
+                <h3 class="mission-title">
+                  <i class='bx bx-target-lock'></i> Our Mission
+                </h3>
+                <p>At World Tour, our mission is to connect travelers around the world through shared experiences and stories. We believe that travel is not just about visiting new places, but about understanding different cultures, meeting new people, and gaining new perspectives.</p>
+                <p>We strive to create a platform where travelers can share their adventures, discover new destinations, and connect with like-minded individuals who share their passion for exploration.</p>
+              </div>
+              <div class="vision-content">
+                <h3 class="vision-title">
+                  <i class='bx bx-bulb'></i> Our Vision
+                </h3>
+                <p>Our vision is to build the most comprehensive and immersive travel community platform in the world. We're working toward a future where anyone can experience the wonders of global travel, even if they can't physically visit every destination.</p>
+                <p>Through our innovative virtual reality tours, detailed blogs, and vibrant community, we aim to make the world more accessible and bring people together through the shared joy of discovery.</p>
+              </div>
+            </div>
+
+            <div class="team-section">
+              <h3 class="section-header">Our Team</h3>
+              <div class="team-grid">
+                <div class="team-card">
+                  <div class="team-image">
+                    <img src="https://source.unsplash.com/random/300x300/?portrait,man" alt="Om Shine">
+                  </div>
+                  <div class="team-content">
+                    <h4 class="team-name">Om Shine</h4>
+                    <p class="team-role">Team Leader</p>
+                    <p class="team-bio">A passionate traveler who has visited over 30 countries, Om leads our team with vision and dedication to creating the best travel platform possible.</p>
+                  </div>
+                </div>
+                <div class="team-card">
+                  <div class="team-image">
+                    <img src="https://source.unsplash.com/random/300x300/?portrait,researcher" alt="Aniket Kharbadkar">
+                  </div>
+                  <div class="team-content">
+                    <h4 class="team-name">Aniket Kharbadkar</h4>
+                    <p class="team-role">Travel Content Researcher</p>
+                    <p class="team-bio">Aniket is our dedicated travel researcher who ensures all content is accurate, engaging, and provides valuable insights to our users.</p>
+                  </div>
+                </div>
+                <div class="team-card">
+                  <div class="team-image">
+                    <img src="https://source.unsplash.com/random/300x300/?portrait,developer" alt="Jeevan Kaware">
+                  </div>
+                  <div class="team-content">
+                    <h4 class="team-name">Jeevan Kaware</h4>
+                    <p class="team-role">Frontend Developer</p>
+                    <p class="team-bio">Jeevan is the creative mind behind our user interface, focusing on creating beautiful and intuitive experiences for our users.</p>
+                  </div>
+                </div>
+                <div class="team-card">
+                  <div class="team-image">
+                    <img src="https://source.unsplash.com/random/300x300/?silhouette" alt="Anonymous">
+                  </div>
+                  <div class="team-content">
+                    <h4 class="team-name">Anonymous</h4>
+                    <p class="team-role">Special</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Help Section -->
+      <section id="help" class="section-content">
+        <section class="help-section">
+          <div class="container">
+            <div class="help-header">
+              <h2>Help Center</h2>
+              <p>Find answers to your questions and get support</p>
+            </div>
+
+            <div class="faq-section">
+              <h3>Frequently Asked Questions</h3>
+              
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>How do I create a blog post?</span>
+                  <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                  <p>To create a blog post, sign up for an account or log in if you already have one. Then click on the "Share your Experiences" button on the homepage or the "Create Blog" option in your user menu. Fill in the required fields including title, content, location, and upload images to share your travel experience.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>When will the Virtual Reality tours be available?</span>
+                  <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                  <p>We're currently developing our Virtual Reality tour feature, which will be available in the coming months. You can click the "Notify Me When Available" button in the VR section to be among the first to know when we launch this feature.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>How can I interact with other travelers?</span>
+                  <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                  <p>You can interact with other travelers through our Community section, where you can join discussions, ask questions, and share tips with fellow travel enthusiasts. You can also comment on blog posts and articles to engage with content creators.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>Is my personal information secure?</span>
+                  <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                  <p>Yes, we take data security very seriously. We use industry-standard encryption to protect your personal information. We never share your data with third parties without your consent, and you can manage your privacy settings in your account profile.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span>How can I feature my destination or travel business?</span>
+                  <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                  <p>If you're a destination representative or travel business looking to feature your services on our platform, please contact us through the contact form below or email us at partnerships@worldtour.com. We offer various partnership opportunities.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="feedback-section">
+              <div class="feedback-form">
+                <h3>Rate Your Experience</h3>
+                <div class="rating-stars" id="rating-stars">
+                  <i class='bx bx-star star' data-value="1"></i>
+                  <i class='bx bx-star star' data-value="2"></i>
+                  <i class='bx bx-star star' data-value="3"></i>
+                  <i class='bx bx-star star' data-value="4"></i>
+                  <i class='bx bx-star star' data-value="5"></i>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="feedback-subject">Subject</label>
+                  <input type="text" class="form-input" id="feedback-subject" placeholder="Enter subject">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="feedback-message">Your Feedback</label>
+                  <textarea class="form-input form-textarea" id="feedback-message" placeholder="Share your thoughts or suggestions"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="feedback-email">Email (optional)</label>
+                  <input type="email" class="form-input" id="feedback-email" placeholder="your@email.com">
+                </div>
+
+                <button class="btn btn-primary btn-large" id="submit-feedback-btn">Submit Feedback</button>
+              </div>
+
+              <div class="contact-info">
+                <h3>Contact Us</h3>
+
+                <div class="contact-item">
+                  <div class="contact-icon">
+                    <i class='bx bx-envelope'></i>
+                  </div>
+                  <div>
+                    <h4>Email</h4>
+                    <p>support@worldtour.com</p>
+                  </div>
+                </div>
+
+                <div class="contact-item">
+                  <div class="contact-icon">
+                    <i class='bx bx-phone'></i>
+                  </div>
+                  <div>
+                    <h4>Phone</h4>
+                    <p>+1 (555) 123-4567</p>
+                  </div>
+                </div>
+
+                <div class="contact-item">
+                  <div class="contact-icon">
+                    <i class='bx bx-map'></i>
+                  </div>
+                  <div>
+                    <h4>Address</h4>
+                    <p>123 Travel Street, Suite 456<br>Exploration City, TC 78910</p>
+                  </div>
+                </div>
+
+                <div class="contact-item">
+                  <div class="contact-icon">
+                    <i class='bx bx-time-five'></i>
+                  </div>
+                  <div>
+                    <h4>Support Hours</h4>
+                    <p>Monday-Friday: 9am - 6pm EST<br>Weekend: 10am - 4pm EST</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-column">
+            <h3>About WorldTour</h3>
+            <p>Explore the world through stories and immersive virtual reality tours from global travelers.</p>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="#home">Home</a></li>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#blogs">Blogs</a></li>
+              <li><a href="#vr-tours">VR Tours</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Resources</h3>
+            <ul class="footer-links">
+              <li><a href="#help">Help Center</a></li>
+              <li><a href="#about">About Us</a></li>
+              <li><a href="#privacy-policy">Privacy Policy</a></li>
+              <li><a href="#terms">Terms of Service</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Connect</h3>
+            <ul class="footer-links">
+              <li><a href="#"><i class='bx bxl-twitter'></i> Twitter</a></li>
+              <li><a href="#"><i class='bx bxl-instagram'></i> Instagram</a></li>
+              <li><a href="#"><i class='bx bxl-facebook'></i> Facebook</a></li>
+              <li><a href="#"><i class='bx bxl-youtube'></i> YouTube</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <p>&copy; 2025 WorldTour. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Travel Assistant Chatbot -->
+    <div class="travel-assistant" id="travel-assistant">
+      <button class="chat-button" id="chat-button">
+        <i class='bx bx-message-rounded-dots'></i>
+      </button>
+      
+      <div class="assistant-window" id="assistant-window" style="display: none;">
+        <div class="assistant-header">
+          <div class="assistant-title">
+            <div class="assistant-avatar">
+              <i class='bx bx-sparkles'></i>
+            </div>
+            <h3>Travel Companion</h3>
+          </div>
+          <div class="assistant-controls">
+            <button class="btn-minimize" id="assistant-minimize">
+              <i class='bx bx-minus-circle'></i>
+            </button>
+            <button class="btn-close" id="assistant-close">
+              <i class='bx bx-x'></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="assistant-body">
+          <div class="assistant-messages" id="assistant-messages">
+            <div class="message assistant">
+              <div class="message-content">
+                👋 Hi there! I'm your AI travel companion. Ask me any travel questions or recommendations for your next adventure!
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="assistant-footer">
+          <form class="assistant-form" id="assistant-form">
+            <textarea class="assistant-input" id="assistant-input" placeholder="Ask about travel destinations..."></textarea>
+            <button type="submit" class="btn btn-send">
+              <i class='bx bx-send'></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="auth-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title" id="auth-modal-title">Sign Up</h3>
+          <button class="modal-close" id="auth-modal-close">
+            <i class='bx bx-x'></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="tab-buttons">
+            <button class="tab-button active" data-tab="signup-tab">Sign Up</button>
+            <button class="tab-button" data-tab="login-tab">Login</button>
+          </div>
+          
+          <div class="tab-content active" id="signup-tab">
+            <form id="signup-form">
+              <div class="form-group">
+                <label class="form-label" for="signup-name">Full Name</label>
+                <input type="text" class="form-input" id="signup-name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="signup-email">Email</label>
+                <input type="email" class="form-input" id="signup-email" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="signup-password">Password</label>
+                <input type="password" class="form-input" id="signup-password" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="signup-confirm">Confirm Password</label>
+                <input type="password" class="form-input" id="signup-confirm" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-large" style="width: 100%;">Create Account</button>
+            </form>
+          </div>
+          
+          <div class="tab-content" id="login-tab">
+            <form id="login-form">
+              <div class="form-group">
+                <label class="form-label" for="login-email">Email</label>
+                <input type="email" class="form-input" id="login-email" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="login-password">Password</label>
+                <input type="password" class="form-input" id="login-password" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-large" style="width: 100%;">Login</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Blog Modal -->
+    <div class="modal-overlay" id="create-blog-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">Create a New Blog</h3>
+          <button class="modal-close" id="create-blog-modal-close">
+            <i class='bx bx-x'></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="create-blog-form">
+            <div class="form-group">
+              <label class="form-label" for="blog-title">Title</label>
+              <input type="text" class="form-input" id="blog-title" placeholder="Enter blog title" required>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="blog-location">Location</label>
+              <input type="text" class="form-input" id="blog-location" placeholder="Enter travel destination" required>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="blog-category">Category</label>
+              <select class="form-input" id="blog-category" required>
+                <option value="">Select a category</option>
+                <option value="India">India</option>
+                <option value="International">International</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Budget">Budget Travel</option>
+                <option value="Luxury">Luxury</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="blog-content">Content</label>
+              <textarea class="form-input form-textarea" id="blog-content" placeholder="Share your travel experience..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="blog-image">Cover Image URL</label>
+              <input type="text" class="form-input" id="blog-image" placeholder="Enter image URL">
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-large" style="width: 100%;">Publish Blog</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- VR Notification Modal -->
+    <div class="modal-overlay" id="vr-notification-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">Get Notified</h3>
+          <button class="modal-close" id="vr-notification-modal-close">
+            <i class='bx bx-x'></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>We'll notify you as soon as our Virtual Reality tours are available. Please enter your email to join the waitlist.</p>
+          <form id="vr-notification-form">
+            <div class="form-group">
+              <label class="form-label" for="vr-notification-email">Email</label>
+              <input type="email" class="form-input" id="vr-notification-email" placeholder="your@email.com" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-large" style="width: 100%;">Notify Me</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cosmic particles background -->
+    <div class="cosmic-particles" id="cosmic-particles"></div>
+  </div>
+
+  <script>
+    // Sample data for blogs
+    const blogData = [
+      {
+        id: 1,
+        title: "The Magnificent Seven Wonders: A Journey Through Time",
+        location: "7 Wonders",
+        excerpt: "From the Great Wall of China to the Colosseum in Rome, the seven wonders of the world offer a glimpse into humanity's greatest architectural achievements.",
+        content: "The Seven Wonders of the World represent the most extraordinary man-made structures across different eras. Each tells a unique story of human ingenuity and ambition. From the Great Pyramid of Giza standing tall for millennia to the majesty of Machu Picchu nestled in the Andes, these sites are not merely tourist attractions but windows into our collective human achievement.",
+        image: "https://source.unsplash.com/random/600x400/?seven,wonders",
+        category: "International",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "May 2, 2025",
+        views: 342
+      },
+      {
+        id: 2,
+        title: "Raigad Fort: The Capital of Maratha Empire",
+        location: "Raigad",
+        excerpt: "Exploring the historical magnificence of Raigad Fort, the capital of Chhatrapati Shivaji Maharaj's Maratha Empire.",
+        content: "Standing majestically atop the Sahyadri mountain range, Raigad Fort was the capital of the Maratha Empire under the legendary ruler Chhatrapati Shivaji Maharaj. The fort's strategic location, intricate architecture, and historical significance make it a must-visit destination for history enthusiasts and adventure seekers alike.",
+        image: "https://i.ibb.co/R4BDgXwk/52859b4f3dc06bbfeb6183951cd8bfab.jpg",
+        category: "India",
+        author: "Admin",
+        authorAvatar: "https://admin.",
+        date: "April 28, 2025",
+        views: 287
+      },
+      {
+        id: 3,
+        title: "Red Fort: Symbol of India's Independence",
+        location: "Red Fort",
+        excerpt: "The iconic Red Fort in Delhi stands as a testament to India's rich history and its journey to independence.",
+        content: "Built by Emperor Shah Jahan in the 17th century, the Red Fort has witnessed centuries of India's tumultuous history. Its massive red sandstone walls, intricate Mughal architecture, and the annual Independence Day flag hoisting ceremony make it a symbol of national pride and historical significance.",
+        image: "https://source.unsplash.com/random/600x400/?red,fort",
+        category: "India",
+        author: "Admin",
+        authorAvatar: "https://i.ibb.co/R4BDgXwk/52859b4f3dc06bbfeb6183951cd8bfab.jpg",
+        date: "April 25, 2025",
+        views: 325
+      },
+      {
+        id: 4,
+        title: "Lonavala: The Jewel of Western Ghats",
+        location: "Lonavala",
+        excerpt: "Escape to the misty hills of Lonavala, a popular hill station nestled in the Western Ghats of Maharashtra.",
+        content: "With its lush green valleys, misty mountains, and cascading waterfalls, Lonavala offers a perfect retreat from the hustle and bustle of city life. The Bhushi Dam, Tiger Point, and Karla Caves are just a few of the attractions that make this hill station a favorite weekend getaway for Mumbai and Pune residents.",
+        image: "https://source.unsplash.com/random/600x400/?mountain,valley",
+        category: "India",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 22, 2025",
+        views: 276
+      },
+      {
+        id: 5,
+        title: "Gateway of India: Mumbai's Iconic Monument",
+        location: "Gateway of India",
+        excerpt: "The Gateway of India, overlooking the Arabian Sea, is one of Mumbai's most recognizable landmarks and a symbol of its colonial past.",
+        content: "Built to commemorate the visit of King George V and Queen Mary to Mumbai, the Gateway of India has become an iconic symbol of the city. Standing proudly on the waterfront, it offers breathtaking views of the Arabian Sea and serves as a departure point for boats heading to Elephanta Caves.",
+        image: "https://source.unsplash.com/random/600x400/?gateway,india",
+        category: "India",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 19, 2025",
+        views: 312
+      },
+      {
+        id: 6,
+        title: "Mahabaleshwar: The Queen of Hill Stations",
+        location: "Mahabaleshwar",
+        excerpt: "Discover the natural beauty and serene atmosphere of Mahabaleshwar, one of Maharashtra's most beautiful hill stations.",
+        content: "Perched at an altitude of 1,353 meters in the Western Ghats, Mahabaleshwar is known for its panoramic viewpoints, strawberry farms, and pleasant climate. From Arthur's Seat to Venna Lake, the hill station offers numerous attractions for nature lovers and adventure enthusiasts.",
+        image: "https://source.unsplash.com/random/600x400/?hill,station",
+        category: "India",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 16, 2025",
+        views: 298
+      },
+      {
+        id: 7,
+        title: "Meenakshi Temple: A Masterpiece of Dravidian Architecture",
+        location: "Meenakshi Temple",
+        excerpt: "The Meenakshi Amman Temple in Madurai is a stunning example of Dravidian architecture and a center of Tamil culture and tradition.",
+        content: "With its towering gopurams (gateway towers) adorned with thousands of colorful sculptures, the Meenakshi Temple is a marvel of architectural brilliance. The temple complex, dedicated to Goddess Meenakshi and Lord Sundareswarar, attracts millions of devotees and tourists annually.",
+        image: "https://source.unsplash.com/random/600x400/?temple,india",
+        category: "India",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 13, 2025",
+        views: 335
+      },
+      {
+        id: 8,
+        title: "Chikhaldara: Maharashtra's Only Hill Station in Vidarbha",
+        location: "Chikhaldara",
+        excerpt: "Explore the unexplored beauty of Chikhaldara, a hidden gem in the Vidarbha region of Maharashtra.",
+        content: "Tucked away in the Satpura mountain range, Chikhaldara is a picturesque hill station known for its wildlife, coffee plantations, and stunning viewpoints. According to legend, it was here that Bheema, one of the Pandava brothers, killed the villainous Keechaka and threw him into the valley, giving the place its name.",
+        image: "https://source.unsplash.com/random/600x400/?hills,forest",
+        category: "India",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 10, 2025",
+        views: 265
+      },
+      {
+        id: 9,
+        title: "Haji Ali Dargah: A Symbol of Faith and Devotion",
+        location: "Hujur Shab",
+        excerpt: "The Haji Ali Dargah, located on an islet off the coast of Mumbai, is a revered religious site that attracts devotees from all faiths.",
+        content: "Connected to the mainland by a narrow causeway, the Haji Ali Dargah is a testament to Indo-Islamic architecture and spiritual harmony. The white marble structure, housing the tomb of the Muslim saint Pir Haji Ali Shah Bukhari, stands majestically amidst the Arabian Sea and is a must-visit destination in Mumbai.",
+        image: "https://source.unsplash.com/random/600x400/?mosque,sea",
+        category: "India",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 7, 2025",
+        views: 305
+      },
+      {
+        id: 10,
+        title: "Shivneri Fort: Birthplace of Chhatrapati Shivaji Maharaj",
+        location: "Shivanari",
+        excerpt: "Visit Shivneri Fort, the birthplace of the legendary Maratha warrior king Chhatrapati Shivaji Maharaj.",
+        content: "Perched atop a hill near Junnar in Pune district, Shivneri Fort holds immense historical significance as the birthplace of Chhatrapati Shivaji Maharaj, the founder of the Maratha Empire. The fort's strategic location, water cisterns, and historical artifacts offer fascinating insights into the life and times of one of India's greatest rulers.",
+        image: "https://source.unsplash.com/random/600x400/?fort,historic",
+        category: "India",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 4, 2025",
+        views: 318
+      },
+      {
+        id: 11,
+        title: "Eiffel Tower: The Iron Lady of Paris",
+        location: "Eiffel Tower",
+        excerpt: "Standing tall at 330 meters, the Eiffel Tower is the most iconic landmark of Paris and a symbol of French cultural heritage.",
+        content: "Originally built as a temporary exhibit for the 1889 World's Fair, the Eiffel Tower has become one of the most recognizable structures in the world. Its elegant design, magnificent views of Paris, and romantic ambiance make it a must-visit destination for travelers from around the globe.",
+        image: "https://source.unsplash.com/random/600x400/?eiffel,tower",
+        category: "International",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 1, 2025",
+        views: 352
+      },
+      {
+        id: 12,
+        title: "Blue Lagoon: Iceland's Geothermal Wonder",
+        location: "Blue Lagoon",
+        excerpt: "Immerse yourself in the milky blue waters of Iceland's Blue Lagoon, a geothermal spa renowned for its healing properties.",
+        content: "Nestled amidst a dramatic landscape of black lava fields, the Blue Lagoon offers a unique bathing experience in its mineral-rich, geothermally heated seawater. The silica, algae, and minerals in the water are known for their skin-healing properties, making it not just a tourist attraction but also a wellness destination.",
+        image: "https://source.unsplash.com/random/600x400/?blue,lagoon",
+        category: "International",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "March 29, 2025",
+        views: 328
+      },
+      {
+        id: 13,
+        title: "Niagara Falls: The Thundering Waters",
+        location: "Niagara Falls",
+        excerpt: "Experience the raw power and breathtaking beauty of Niagara Falls, one of the most famous waterfalls in the world.",
+        content: "Straddling the border between the United States and Canada, Niagara Falls comprises three waterfalls: the Horseshoe Falls, the American Falls, and the Bridal Veil Falls. The thunderous roar of the water, the misty atmosphere, and the rainbow-hued views create an awe-inspiring natural spectacle that attracts millions of visitors annually.",
+        image: "https://source.unsplash.com/random/600x400/?niagara,falls",
+        category: "International",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "March 26, 2025",
+        views: 345
+      },
+      {
+        id: 14,
+        title: "Burj Khalifa: Touching the Sky",
+        location: "Burj Khalifa",
+        excerpt: "Soaring to a height of 828 meters, the Burj Khalifa in Dubai is the tallest building in the world and a marvel of modern engineering.",
+        content: "The Burj Khalifa is not just a skyscraper; it's a vertical city with residential apartments, office spaces, and the luxurious Armani Hotel. The observation decks on the 124th, 125th, and 148th floors offer unparalleled views of Dubai's skyline, the Arabian Gulf, and the surrounding desert, making it a must-visit attraction in the UAE.",
+        image: "https://source.unsplash.com/random/600x400/?burj,khalifa",
+        category: "International",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "March 23, 2025",
+        views: 367
+      },
+      {
+        id: 15,
+        title: "Mount Fuji: Japan's Sacred Mountain",
+        location: "Mount Fuji",
+        excerpt: "Discover the serene beauty and cultural significance of Mount Fuji, Japan's highest peak and a UNESCO World Heritage Site.",
+        content: "With its perfectly symmetrical cone and snow-capped summit, Mount Fuji has been a subject of artistic inspiration and spiritual reverence for centuries. Whether viewed from a distance or climbed to experience the sunrise from its summit, Mount Fuji offers a profound connection with nature and Japanese cultural identity.",
+        image: "https://source.unsplash.com/random/600x400/?mount,fuji",
+        category: "International",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "March 20, 2025",
+        views: 331
+      }
+    ];
+
+    // Sample data for articles
+    const articleData = [
+      {
+        id: 1,
+        title: "10 Essential Tips for Solo Female Travelers",
+        excerpt: "Practical advice and safety tips for women traveling alone, from packing smart to making connections on the road.",
+        image: "https://source.unsplash.com/random/600x400/?woman,travel",
+        category: "Travel Tips",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "May 1, 2025",
+        views: 428
+      },
+      {
+        id: 2,
+        title: "Budget Travel: How to See the World Without Breaking the Bank",
+        excerpt: "Smart strategies for affordable travel, including finding flight deals, budget accommodation options, and free activities.",
+        image: "https://source.unsplash.com/random/600x400/?budget,travel",
+        category: "Budget",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 27, 2025",
+        views: 385
+      },
+      {
+        id: 3,
+        title: "The Art of Slow Travel: Why You Should Spend More Time in Fewer Places",
+        excerpt: "Embracing the slow travel movement for a more immersive and authentic travel experience.",
+        image: "https://source.unsplash.com/random/600x400/?slow,travel",
+        category: "Travel Philosophy",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 24, 2025",
+        views: 356
+      },
+      {
+        id: 4,
+        title: "Sustainable Tourism: How to Reduce Your Environmental Impact While Traveling",
+        excerpt: "Practical tips for eco-friendly travel, from choosing green accommodations to reducing plastic waste on the road.",
+        image: "https://source.unsplash.com/random/600x400/?eco,travel",
+        category: "Sustainable Travel",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 21, 2025",
+        views: 402
+      },
+      {
+        id: 5,
+        title: "Digital Nomad Life: Working While Traveling the World",
+        excerpt: "Insights into the digital nomad lifestyle, including work-friendly destinations, visa considerations, and productivity tips.",
+        image: "https://source.unsplash.com/random/600x400/?digital,nomad",
+        category: "Digital Nomad",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 18, 2025",
+        views: 439
+      },
+      {
+        id: 6,
+        title: "Cultural Etiquette Around the World: Do's and Don'ts for Travelers",
+        excerpt: "Essential cultural norms and etiquette tips to help you respect local customs and traditions while traveling.",
+        image: "https://source.unsplash.com/random/600x400/?culture,travel",
+        category: "Cultural",
+        author: "Admin",
+        authorAvatar: "https://source.unsplash.com/random/100x100/?portrait",
+        date: "April 15, 2025",
+        views: 374
+      }
+    ];
+
+    // Sample data for features
+    const featuresData = [
+      {
+        icon: 'bx bx-globe',
+        title: 'Global Travel Blogs',
+        description: 'Discover user-generated content featuring 35 pre-existing travel blogs, with destinations from around the world.',
+      },
+      {
+        icon: 'bx bx-headphone',
+        title: 'Immersive VR Tours',
+        description: 'Coming soon: 360° gamified fixed-position VR experiences where you can navigate through three different views of each destination.',
+      },
+      {
+        icon: 'bx bx-edit',
+        title: 'Create Your Own Blog',
+        description: 'Share your travel experiences by creating your own travel blog with rich content, images, and location information.',
+      },
+      {
+        icon: 'bx bx-group',
+        title: 'Community Connection',
+        description: 'Connect with fellow travelers, find travel buddies, and join group chats with people who share your passion for exploration.',
+      },
+      {
+        icon: 'bx bx-message-rounded-dots',
+        title: 'Travel Companion Chatbot',
+        description: 'Get instant travel advice and assistance from our AI travel companion chatbot available throughout the site.',
+      },
+      {
+        icon: 'bx bx-lock',
+        title: 'Secure User Accounts',
+        description: 'Create your personal account to save favorite destinations, create blogs, and interact with the community.',
+      }
+    ];
+
+    // Sample data for community chat
+    const communityMessages = [
+      {
+        id: 1,
+        name: 'Admin',
+        avatar: 'https://source.unsplash.com/random/100x100/?portrait',
+        text: 'Welcome to the Global Travelers community! This is a space to connect with fellow travelers, share tips, and ask questions about destinations around the world.',
+        time: '10:30 AM'
+      },
+      {
+        id: 2,
+        name: 'Admin',
+        avatar: 'https://source.unsplash.com/random/100x100/?portrait',
+        text: 'Has anyone visited Bali recently? Looking for current information about entry requirements and local restrictions.',
+        time: '10:45 AM'
+      },
+      {
+        id: 3,
+        name: 'Admin',
+        avatar: 'https://source.unsplash.com/random/100x100/?portrait',
+        text: 'I was in Bali last month. The island is fully open to tourists, no COVID tests or quarantine required currently. Just a normal visa process. The beaches and temples are less crowded than pre-pandemic, which is nice!',
+        time: '11:02 AM'
+      },
+      {
+        id: 4,
+        name: 'Admin',
+        avatar: 'https://source.unsplash.com/random/100x100/?portrait',
+        text: 'Thanks for the info! Any recommendations for accommodations in Ubud area?',
+        time: '11:15 AM'
+      },
+      {
+        id: 5,
+        name: 'Admin',
+        avatar: 'https://source.unsplash.com/random/100x100/?portrait',
+        text: 'Anyone planning a trip to Japan this summer? Looking for travel companions for a 2-week itinerary covering Tokyo, Kyoto, and Osaka.',
+        time: '11:30 AM'
+      }
+    ];
+
+    // DOM elements
+    const themeToggle = document.getElementById('theme-toggle');
+    const authModal = document.getElementById('auth-modal');
+    const loginBtn = document.getElementById('login-btn');
+    const signupBtn = document.getElementById('signup-btn');
+    const authModalClose = document.getElementById('auth-modal-close');
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const logoutBtn = document.getElementById('logout-btn');
+    const chatButton = document.getElementById('chat-button');
+    const assistantWindow = document.getElementById('assistant-window');
+    const assistantClose = document.getElementById('assistant-close');
+    const assistantMinimize = document.getElementById('assistant-minimize');
+    const assistantForm = document.getElementById('assistant-form');
+    const assistantInput = document.getElementById('assistant-input');
+    const assistantMessages = document.getElementById('assistant-messages');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sectionContents = document.querySelectorAll('.section-content');
+    const toastContainer = document.getElementById('toast-container');
+    const createBlogBtn = document.getElementById('create-blog-btn');
+    const createBlogBtn2 = document.getElementById('create-blog-btn-2');
+    const createBlogModal = document.getElementById('create-blog-modal');
+    const createBlogModalClose = document.getElementById('create-blog-modal-close');
+    const createBlogForm = document.getElementById('create-blog-form');
+    const vrButton = document.getElementById('vr-button');
+    const vrNotifyBtn = document.getElementById('vr-notify-btn');
+    const vrNotifyBtn2 = document.getElementById('vr-notify-btn-2');
+    const vrNotificationModal = document.getElementById('vr-notification-modal');
+    const vrNotificationModalClose = document.getElementById('vr-notification-modal-close');
+    const vrNotificationForm = document.getElementById('vr-notification-form');
+    const readBlogsBtn = document.getElementById('read-blogs-btn');
+    const exploreBlogsBtn = document.getElementById('explore-blogs-btn');
+    const learnMoreBtn = document.getElementById('learn-more-btn');
+    const faqItems = document.querySelectorAll('.faq-item');
+    const ratingStars = document.querySelectorAll('.star');
+    const submitFeedbackBtn = document.getElementById('submit-feedback-btn');
+    const sendMessageBtn = document.getElementById('send-message-btn');
+    const communityInput = document.getElementById('community-input');
+    const communityChat = document.getElementById('community-chat');
+
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', () => {
+      createCosmicParticles();
+      populateBlogs();
+      populateFeatures();
+      populateArticles();
+      populateCommunityChat();
+      setupEventListeners();
+    });
+
+    // Create cosmic particles
+    function createCosmicParticles() {
+      const container = document.getElementById('cosmic-particles');
+      const particleCount = 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'cosmic-particle';
+        
+        // Random position
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.left = `${Math.random() * 100}%`;
+        
+        // Random animation delay
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        
+        // Random size
+        const scale = Math.random() * 2 + 0.5;
+        particle.style.transform = `scale(${scale})`;
+        
+        container.appendChild(particle);
+      }
+    }
+
+    // Populate blogs
+    function populateBlogs() {
+      const rotatingBlogsContainer = document.getElementById('rotating-blogs');
+      const allBlogsContainer = document.getElementById('all-blogs');
+      
+      if (rotatingBlogsContainer) {
+        // Add the first 6 blogs to rotating container
+        blogData.slice(0, 6).forEach(blog => {
+          rotatingBlogsContainer.appendChild(createBlogCard(blog));
+        });
+      }
+      
+      if (allBlogsContainer) {
+        // Add all blogs to all blogs container
+        blogData.forEach(blog => {
+          allBlogsContainer.appendChild(createBlogCard(blog));
+        });
+      }
+    }
+
+    // Create blog card
+    function createBlogCard(blog) {
+      const card = document.createElement('div');
+      card.className = 'blog-card';
+      card.innerHTML = `
+        <div class="blog-image">
+          <img src="${blog.image}" alt="${blog.title}">
+          <div class="blog-image-overlay"></div>
+          <div class="blog-category">${blog.category}</div>
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span>${blog.date}</span>
+            <span class="blog-views">
+              <i class='bx bx-show'></i> ${blog.views}
+            </span>
+          </div>
+          <h3 class="blog-title">${blog.title}</h3>
+          <p class="blog-excerpt">${blog.excerpt}</p>
+          <div class="blog-footer">
+            <div class="blog-author">
+              <div class="author-avatar">
+                <img src="${blog.authorAvatar}" alt="${blog.author}">
+              </div>
+              <span class="author-name">${blog.author}</span>
+            </div>
+            <a href="blog-${blog.id}.html" class="read-more">
+              Read More <i class='bx bx-right-arrow-alt'></i>
+            </a>
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    // Populate features
+    function populateFeatures() {
+      const homeFeaturesGrid = document.getElementById('home-features-grid');
+      const featuresGrid = document.getElementById('features-grid');
+      
+      if (homeFeaturesGrid) {
+        // Add the first 3 features to home features grid
+        featuresData.slice(0, 3).forEach(feature => {
+          homeFeaturesGrid.appendChild(createFeatureCard(feature));
+        });
+      }
+      
+      if (featuresGrid) {
+        // Add all features to features grid
+        featuresData.forEach(feature => {
+          featuresGrid.appendChild(createFeatureCard(feature));
+        });
+      }
+    }
+
+    // Create feature card
+    function createFeatureCard(feature) {
+      const card = document.createElement('div');
+      card.className = 'feature-card';
+      card.innerHTML = `
+        <div class="feature-icon">
+          <i class='${feature.icon}'></i>
+        </div>
+        <h3 class="feature-title">${feature.title}</h3>
+        <p class="feature-description">${feature.description}</p>
+      `;
+      return card;
+    }
+
+    // Populate articles
+    function populateArticles() {
+      const articlesGrid = document.getElementById('articles-grid');
+      
+      if (articlesGrid) {
+        articleData.forEach(article => {
+          articlesGrid.appendChild(createArticleCard(article));
+        });
+      }
+    }
+
+    // Create article card
+    function createArticleCard(article) {
+      const card = document.createElement('div');
+      card.className = 'blog-card';
+      card.innerHTML = `
+        <div class="blog-image">
+          <img src="${article.image}" alt="${article.title}">
+          <div class="blog-image-overlay"></div>
+          <div class="blog-category">${article.category}</div>
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span>${article.date}</span>
+            <span class="blog-views">
+              <i class='bx bx-show'></i> ${article.views}
+            </span>
+          </div>
+          <h3 class="blog-title">${article.title}</h3>
+          <p class="blog-excerpt">${article.excerpt}</p>
+          <div class="blog-footer">
+            <div class="blog-author">
+              <div class="author-avatar">
+                <img src="${article.authorAvatar}" alt="${article.author}">
+              </div>
+              <span class="author-name">${article.author}</span>
+            </div>
+            <a href="article-${article.id}.html" class="read-more">
+              Read More <i class='bx bx-right-arrow-alt'></i>
+            </a>
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    // Populate community chat
+    function populateCommunityChat() {
+      const communityChat = document.getElementById('community-chat');
+      
+      if (communityChat) {
+        communityMessages.forEach(message => {
+          communityChat.appendChild(createChatMessage(message));
+        });
+      }
+    }
+
+    // Create chat message
+    function createChatMessage(message) {
+      const messageElement = document.createElement('div');
+      messageElement.className = 'chat-message';
+      messageElement.innerHTML = `
+        <div class="chat-avatar">
+          <img src="${message.avatar}" alt="${message.name}">
+        </div>
+        <div class="chat-content">
+          <div class="chat-name">${message.name}</div>
+          <div class="chat-text">${message.text}</div>
+          <div class="chat-time">${message.time}</div>
+        </div>
+      `;
+      return messageElement;
+    }
+
+    // Set up event listeners
+    function setupEventListeners() {
+      // Theme toggle
+      if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+      }
+      
+      // Auth modal
+      if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+          openAuthModal('login');
+        });
+      }
+      
+      if (signupBtn) {
+        signupBtn.addEventListener('click', () => {
+          openAuthModal('signup');
+        });
+      }
+      
+      if (authModalClose) {
+        authModalClose.addEventListener('click', closeAuthModal);
+      }
+      
+      // Tab buttons
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabId = button.getAttribute('data-tab');
+          switchTab(tabId);
+        });
+      });
+      
+      // Auth forms
+      if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+      }
+      
+      if (signupForm) {
+        signupForm.addEventListener('submit', handleSignup);
+      }
+      
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+      }
+      
+      // Travel assistant
+      if (chatButton) {
+        chatButton.addEventListener('click', openAssistant);
+      }
+      
+      if (assistantClose) {
+        assistantClose.addEventListener('click', closeAssistant);
+      }
+      
+      if (assistantMinimize) {
+        assistantMinimize.addEventListener('click', toggleAssistantMinimize);
+      }
+      
+      if (assistantForm) {
+        assistantForm.addEventListener('submit', handleAssistantMessage);
+      }
+      
+      // Navigation
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          const section = link.getAttribute('data-section');
+          switchSection(section);
+          
+          navLinks.forEach(navLink => {
+            navLink.classList.remove('active');
+          });
+          link.classList.add('active');
+        });
+      });
+      
+      // Create blog
+      if (createBlogBtn) {
+        createBlogBtn.addEventListener('click', openCreateBlogModal);
+      }
+      
+      if (createBlogBtn2) {
+        createBlogBtn2.addEventListener('click', openCreateBlogModal);
+      }
+      
+      if (createBlogModalClose) {
+        createBlogModalClose.addEventListener('click', closeCreateBlogModal);
+      }
+      
+      if (createBlogForm) {
+        createBlogForm.addEventListener('submit', handleCreateBlog);
+      }
+      
+      // VR notifications
+      if (vrButton) {
+        vrButton.addEventListener('click', openVRNotificationModal);
+      }
+      
+      if (vrNotifyBtn) {
+        vrNotifyBtn.addEventListener('click', openVRNotificationModal);
+      }
+      
+      if (vrNotifyBtn2) {
+        vrNotifyBtn2.addEventListener('click', openVRNotificationModal);
+      }
+      
+      if (vrNotificationModalClose) {
+        vrNotificationModalClose.addEventListener('click', closeVRNotificationModal);
+      }
+      
+      if (vrNotificationForm) {
+        vrNotificationForm.addEventListener('submit', handleVRNotification);
+      }
+      
+      // Button navigation
+      if (readBlogsBtn) {
+        readBlogsBtn.addEventListener('click', () => {
+          switchSection('blogs');
+        });
+      }
+      
+      if (exploreBlogsBtn) {
+        exploreBlogsBtn.addEventListener('click', () => {
+          switchSection('blogs');
+        });
+      }
+      
+      if (learnMoreBtn) {
+        learnMoreBtn.addEventListener('click', () => {
+          switchSection('features');
+        });
+      }
+      
+      // FAQ accordion
+      faqItems.forEach(item => {
+        item.addEventListener('click', () => {
+          item.classList.toggle('active');
+        });
+      });
+      
+      // Rating stars
+      ratingStars.forEach(star => {
+        star.addEventListener('click', () => {
+          const value = star.getAttribute('data-value');
+          updateRating(value);
+        });
+      });
+      
+      // Submit feedback
+      if (submitFeedbackBtn) {
+        submitFeedbackBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const subject = document.getElementById('feedback-subject').value;
+          const message = document.getElementById('feedback-message').value;
+          
+          if (subject && message) {
+            showToast('Thank you for your feedback!', 'success');
+            document.getElementById('feedback-subject').value = '';
+            document.getElementById('feedback-message').value = '';
+            document.getElementById('feedback-email').value = '';
+            updateRating(0);
+          } else {
+            showToast('Please fill in all required fields', 'error');
+          }
+        });
+      }
+      
+      // Send message
+      if (sendMessageBtn) {
+        sendMessageBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          sendCommunityMessage();
+        });
+      }
+      
+      if (communityInput) {
+        communityInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendCommunityMessage();
+          }
+        });
+      }
+    }
+
+    // Toggle theme
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+      
+      if (document.body.classList.contains('light-mode')) {
+        themeToggle.innerHTML = '<i class="bx bx-sun"></i>';
+        localStorage.setItem('theme', 'light');
+      } else {
+        themeToggle.innerHTML = '<i class="bx bx-moon"></i>';
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // Check if user has a saved theme preference
+    function checkThemePreference() {
+      const savedTheme = localStorage.getItem('theme');
+      
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="bx bx-sun"></i>';
+      }
+    }
+
+    // Open auth modal
+    function openAuthModal(tab) {
+      authModal.classList.add('active');
+      
+      if (tab === 'login') {
+        switchTab('login-tab');
+        document.querySelector('[data-tab="login-tab"]').classList.add('active');
+        document.querySelector('[data-tab="signup-tab"]').classList.remove('active');
+      } else {
+        switchTab('signup-tab');
+        document.querySelector('[data-tab="signup-tab"]').classList.add('active');
+        document.querySelector('[data-tab="login-tab"]').classList.remove('active');
+      }
+    }
+
+    // Close auth modal
+    function closeAuthModal() {
+      authModal.classList.remove('active');
+    }
+
+    // Switch tab
+    function switchTab(tabId) {
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    // Handle login
+    function handleLogin(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      
+      if (email && password) {
+        // Get existing users from localStorage
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Check if user exists
+        const user = users.find(u => u.email === email && u.password === password);
+        
+        if (user) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          updateUserUI(user);
+          closeAuthModal();
+          showToast('Successfully logged in!', 'success');
+        } else {
+          showToast('Invalid email or password', 'error');
+        }
+      } else {
+        showToast('Please fill in all fields', 'error');
+      }
+    }
+
+    // Handle signup
+    function handleSignup(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const confirmPassword = document.getElementById('signup-confirm').value;
+      
+      if (name && email && password && confirmPassword) {
+        if (password !== confirmPassword) {
+          showToast('Passwords do not match', 'error');
+          return;
+        }
+        
+        // Get existing users from localStorage
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Check if user already exists
+        if (users.some(user => user.email === email)) {
+          showToast('Email already registered', 'error');
+          return;
+        }
+        
+        // Create new user
+        const newUser = {
+          id: Date.now(),
+          name,
+          email,
+          password,
+          avatar: 'https://source.unsplash.com/random/100x100/?portrait'
+        };
+        
+        // Add user to users array
+        users.push(newUser);
+        
+        // Save users array to localStorage
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        // Set current user
+        localStorage.setItem('currentUser', JSON.stringify(newUser));
+        
+        // Update UI
+        updateUserUI(newUser);
+        
+        // Close modal
+        closeAuthModal();
+        
+        // Show success toast
+        showToast('Account created successfully!', 'success');
+      } else {
+        showToast('Please fill in all fields', 'error');
+      }
+    }
+
+    // Handle logout
+    function handleLogout() {
+      localStorage.removeItem('currentUser');
+      
+      document.getElementById('auth-buttons').style.display = 'flex';
+      document.getElementById('user-nav').style.display = 'none';
+      
+      showToast('Successfully logged out!', 'success');
+    }
+
+    // Update user UI
+    function updateUserUI(user) {
+      document.getElementById('auth-buttons').style.display = 'none';
+      document.getElementById('user-nav').style.display = 'flex';
+      document.getElementById('user-name').textContent = user.name;
+    }
+
+    // Check if user is logged in
+    function checkLoggedInUser() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      
+      if (currentUser) {
+        updateUserUI(currentUser);
+      }
+    }
+
+    // Open assistant
+    function openAssistant() {
+      assistantWindow.style.display = 'flex';
+      chatButton.style.display = 'none';
+      scrollToBottom();
+    }
+
+    // Close assistant
+    function closeAssistant() {
+      assistantWindow.style.display = 'none';
+      chatButton.style.display = 'flex';
+    }
+
+    // Toggle assistant minimize
+    function toggleAssistantMinimize() {
+      const isMinimized = assistantWindow.style.height === '3.5rem';
+      
+      if (isMinimized) {
+        assistantWindow.style.height = '28rem';
+        assistantMinimize.innerHTML = '<i class="bx bx-minus-circle"></i>';
+      } else {
+        assistantWindow.style.height = '3.5rem';
+        assistantMinimize.innerHTML = '<i class="bx bx-plus-circle"></i>';
+      }
+    }
+
+    // Handle assistant message
+    function handleAssistantMessage(e) {
+      e.preventDefault();
+      
+      const message = assistantInput.value.trim();
+      if (!message) return;
+      
+      // Add user message
+      const userMessage = document.createElement('div');
+      userMessage.className = 'message user';
+      userMessage.innerHTML = `
+        <div class="message-content">${message}</div>
+      `;
+      assistantMessages.appendChild(userMessage);
+      
+      // Clear input
+      assistantInput.value = '';
+      
+      // Scroll to bottom
+      scrollToBottom();
+      
+      // Show typing indicator
+      const typingIndicator = document.createElement('div');
+      typingIndicator.className = 'message assistant';
+      typingIndicator.innerHTML = `
+        <div class="message-content typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      `;
+      typingIndicator.id = 'typing-indicator';
+      assistantMessages.appendChild(typingIndicator);
+      scrollToBottom();
+      
+      // Get response after delay
+      setTimeout(() => {
+        // Remove typing indicator
+        document.getElementById('typing-indicator').remove();
+        
+        // Add assistant response
+        const response = getTravelResponse(message);
+        const assistantMessage = document.createElement('div');
+        assistantMessage.className = 'message assistant';
+        assistantMessage.innerHTML = `
+          <div class="message-content">${response}</div>
+        `;
+        assistantMessages.appendChild(assistantMessage);
+        
+        // Scroll to bottom
+        scrollToBottom();
+      }, 1000);
+    }
+
+    // Get travel response
+    function getTravelResponse(query) {
+      const lowerQuery = query.toLowerCase();
+      
+      if (lowerQuery.includes("best time") || lowerQuery.includes("when to visit")) {
+        return "The best time to visit most destinations depends on your preferences! For tropical locations, dry seasons are typically best. Europe is lovely in spring and fall to avoid crowds. Always check local festivals that might enhance your visit!";
+      } 
+      else if (lowerQuery.includes("budget") || lowerQuery.includes("cheap") || lowerQuery.includes("affordable")) {
+        return "For budget travel, consider Southeast Asia (Thailand, Vietnam), parts of Eastern Europe, or Latin America. Travel during shoulder seasons for better deals, use public transportation, stay in hostels or guesthouses, and eat where locals eat for authentic and affordable experiences.";
+      }
+      else if (lowerQuery.includes("india") || lowerQuery.includes("indian")) {
+        return "India offers incredible diversity! The Golden Triangle (Delhi, Agra, Jaipur) is perfect for first-timers. Kerala's backwaters, Goa's beaches, and Varanasi's spiritual experiences are unforgettable. Consider visiting between October and March for comfortable weather in most regions.";
+      }
+      else if (lowerQuery.includes("solo") || lowerQuery.includes("alone")) {
+        return "Solo travel can be incredibly rewarding! Consider destinations known for safety and friendly locals like Japan, New Zealand, Portugal, or Taiwan. Join walking tours or stay in social accommodations to meet fellow travelers. Always keep someone updated about your whereabouts.";
+      }
+      else if (lowerQuery.includes("family") || lowerQuery.includes("kid") || lowerQuery.includes("children")) {
+        return "Great family destinations include Costa Rica for nature lovers, Italy for culture and food, Japan for unique experiences, and Thailand for beaches and adventures. Look for accommodations with family rooms, plan a balanced itinerary with kid-friendly activities, and allow for downtime.";
+      }
+      else if (lowerQuery.includes("food") || lowerQuery.includes("cuisine") || lowerQuery.includes("eat")) {
+        return "For culinary adventures, consider Japan, Italy, Thailand, Mexico, and Spain. Join food tours early in your trip to get recommendations. Don't miss street food (where safe), local markets, and restaurants away from tourist areas for authentic experiences.";
+      }
+      else if (lowerQuery.includes("beach") || lowerQuery.includes("island")) {
+        return "Some of the world's best beaches can be found in the Maldives, Thailand, Greece, Hawaii, and the Caribbean. For less crowded options, consider the Azores, parts of Vietnam, or Nicaragua. Check when the rainy season is before booking!";
+      }
+      else if (lowerQuery.includes("adventure") || lowerQuery.includes("hiking") || lowerQuery.includes("trekking")) {
+        return "Adventure seekers should check out New Zealand, Costa Rica, Nepal, Iceland, or Patagonia. Make sure to bring appropriate gear, check permit requirements for popular trails, and consider hiring local guides for the best experience and to support local economies.";
+      }
+      else if (lowerQuery.includes("hello") || lowerQuery.includes("hi") || lowerQuery.includes("hey")) {
+        return "Hello there! I'm your AI travel companion. How can I help with your travel plans today?";
+      }
+      else {
+        return "That's an interesting travel question! While I'm still learning, I'd recommend exploring our blog section for detailed guides and experiences from fellow travelers. Is there a specific destination or type of travel you're interested in?";
+      }
+    }
+
+    // Scroll to bottom of chat
+    function scrollToBottom() {
+      if (assistantMessages) {
+        assistantMessages.scrollTop = assistantMessages.scrollHeight;
+      }
+    }
+
+    // Switch section
+    function switchSection(section) {
+      sectionContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      document.getElementById(section).classList.add('active');
+      
+      // Update URL hash
+      window.location.hash = section;
+    }
+
+    // Show toast notification
+    function showToast(message, type) {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <i class='bx ${getToastIcon(type)}'></i>
+        <span>${message}</span>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      // Remove toast after 3 seconds
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+
+    // Get toast icon
+    function getToastIcon(type) {
+      switch (type) {
+        case 'success':
+          return 'bx-check-circle';
+        case 'error':
+          return 'bx-x-circle';
+        case 'warning':
+          return 'bx-error';
+        case 'info':
+          return 'bx-info-circle';
+        default:
+          return 'bx-info-circle';
+      }
+    }
+
+    // Open create blog modal
+    function openCreateBlogModal() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      
+      if (currentUser) {
+        createBlogModal.classList.add('active');
+      } else {
+        openAuthModal('signup');
+        showToast('Please sign up or log in to create a blog', 'info');
+      }
+    }
+
+    // Close create blog modal
+    function closeCreateBlogModal() {
+      createBlogModal.classList.remove('active');
+    }
+
+    // Handle create blog
+    function handleCreateBlog(e) {
+      e.preventDefault();
+      
+      const title = document.getElementById('blog-title').value;
+      const location = document.getElementById('blog-location').value;
+      const category = document.getElementById('blog-category').value;
+      const content = document.getElementById('blog-content').value;
+      const image = document.getElementById('blog-image').value || 'https://source.unsplash.com/random/600x400/?travel';
+      
+      if (title && location && category && content) {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        // Create new blog
+        const newBlog = {
+          id: Date.now(),
+          title,
+          location,
+          category,
+          content,
+          image,
+          excerpt: content.substring(0, 150) + '...',
+          author: currentUser.name,
+          authorAvatar: currentUser.avatar,
+          date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+          views: 0
+        };
+        
+        // Get user blogs from localStorage
+        const userBlogs = JSON.parse(localStorage.getItem('userBlogs')) || [];
+        
+        // Add blog to user blogs
+        userBlogs.push(newBlog);
+        
+        // Save user blogs to localStorage
+        localStorage.setItem('userBlogs', JSON.stringify(userBlogs));
+        
+        // Close modal
+        closeCreateBlogModal();
+        
+        // Show success toast
+        showToast('Blog created successfully!', 'success');
+        
+        // Reset form
+        document.getElementById('create-blog-form').reset();
+        
+        // Add blog to UI
+        const allBlogsContainer = document.getElementById('all-blogs');
+        if (allBlogsContainer) {
+          allBlogsContainer.prepend(createBlogCard(newBlog));
+        }
+        
+        // Switch to blogs section
+        switchSection('blogs');
+      } else {
+        showToast('Please fill in all required fields', 'error');
+      }
+    }
+
+    // Open VR notification modal
+    function openVRNotificationModal() {
+      vrNotificationModal.classList.add('active');
+    }
+
+    // Close VR notification modal
+    function closeVRNotificationModal() {
+      vrNotificationModal.classList.remove('active');
+    }
+
+    // Handle VR notification
+    function handleVRNotification(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('vr-notification-email').value;
+      
+      if (email) {
+        // Get VR waitlist from localStorage
+        const vrWaitlist = JSON.parse(localStorage.getItem('vrWaitlist')) || [];
+        
+        // Check if email already exists
+        if (vrWaitlist.includes(email)) {
+          showToast('You\'re already on the waitlist!', 'info');
+        } else {
+          // Add email to waitlist
+          vrWaitlist.push(email);
+          
+          // Save waitlist to localStorage
+          localStorage.setItem('vrWaitlist', JSON.stringify(vrWaitlist));
+          
+          // Show success toast
+          showToast('You\'ll be notified when VR tours are available!', 'success');
+        }
+        
+        // Close modal
+        closeVRNotificationModal();
+        
+        // Reset form
+        document.getElementById('vr-notification-form').reset();
+      } else {
+        showToast('Please enter your email', 'error');
+      }
+    }
+
+    // Update rating
+    function updateRating(value) {
+      ratingStars.forEach(star => {
+        const starValue = star.getAttribute('data-value');
+        
+        if (starValue <= value) {
+          star.classList.remove('bx-star');
+          star.classList.add('bxs-star');
+          star.classList.add('active');
+        } else {
+          star.classList.remove('bxs-star');
+          star.classList.remove('active');
+          star.classList.add('bx-star');
+        }
+      });
+    }
+
+    // Send community message
+    function sendCommunityMessage() {
+      const message = communityInput.value.trim();
+      
+      if (message) {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        if (currentUser) {
+          const newMessage = {
+            id: Date.now(),
+            name: currentUser.name,
+            avatar: currentUser.avatar,
+            text: message,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          };
+          
+          communityChat.appendChild(createChatMessage(newMessage));
+          communityInput.value = '';
+          
+          // Scroll to bottom
+          communityChat.scrollTop = communityChat.scrollHeight;
+          
+          // Admin response after delay
+          setTimeout(() => {
+            const adminResponse = {
+              id: Date.now() + 1,
+              name: 'Admin',
+              avatar: 'https://source.unsplash.com/random/100x100/?portrait',
+              text: 'Thanks for sharing! Does anyone else have experience with this destination?',
+              time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+            
+            communityChat.appendChild(createChatMessage(adminResponse));
+            communityChat.scrollTop = communityChat.scrollHeight;
+          }, 2000);
+        } else {
+          openAuthModal('signup');
+          showToast('Please sign up or log in to join the conversation', 'info');
+        }
+      }
+    }
+
+    // Check URL hash on load
+    function checkUrlHash() {
+      const hash = window.location.hash.substring(1);
+      
+      if (hash) {
+        switchSection(hash);
+        
+        navLinks.forEach(link => {
+          if (link.getAttribute('data-section') === hash) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+    }
+
+    // Initialize on DOM load
+    window.addEventListener('DOMContentLoaded', () => {
+      checkThemePreference();
+      checkLoggedInUser();
+      checkUrlHash();
+    });
+  </script>
+</body>
+</html>
+     
