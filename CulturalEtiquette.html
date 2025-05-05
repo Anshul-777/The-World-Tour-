@@ -1,1 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cultural Etiquette Around the World: Do's and Don'ts for Travelers</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff6f61;
+      --secondary: #4a90e2;
+      --accent: #f2c94c;
+      --bg-dark: #0a1a2e;
+      --bg-light: #f9f9f9;
+      --text-main: #ffffff;
+      --text-muted: #b0c4de;
+      --card-bg: rgba(255, 255, 255, 0.1);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.7;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      position: relative;
+    }
+    .nebula-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #1e3a8a 0%, #0a1a2e 70%);
+      z-index: -1;
+      overflow: hidden;
+    }
+    .nebula-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(74,144,226,0.2), rgba(255,111,97,0.2));
+      opacity: 0.5;
+      mix-blend-mode: overlay;
+    }
+    .cosmic-particle {
+      position: absolute;
+      background: rgba(255,255,255,0.8);
+      border-radius: 50%;
+      animation: float 20s infinite linear;
+      pointer-events: none;
+    }
+    .cosmic-particle:nth-child(odd) { width: 2px; height: 2px; opacity: 0.6; }
+    .cosmic-particle:nth-child(even) { width: 3px; height: 3px; opacity: 0.4; }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); opacity: 0.8; }
+      50% { opacity: 0.3; }
+      100% { transform: translateY(-100vh) translateX(20px); opacity: 0.8; }
+    }
+    header {
+      background: rgba(10,26,46,0.9);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+    }
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+    nav a:hover { color: var(--accent); }
+    .blog-post-header {
+      height: 70vh;
+      background: url('https://i.ibb.co/gbYCFNCH/a98fa51629e4ed523a7ab9753c865291.jpg') center/cover no-repeat;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-main);
+    }
+    .blog-post-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.7));
+    }
+    .blog-post-title {
+      position: relative;
+      max-width: 900px;
+      padding: 0 1.5rem;
+      animation: fadeUp 1s ease-out;
+    }
+    .blog-post-title h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .blog-post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    .blog-post-meta span { display: flex; align-items: center; }
+    .blog-post-meta i { margin-right: 0.5rem; color: var(--accent); }
+    .blog-post-content {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    .blog-post-content h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin: 2rem 0 1rem;
+      position: relative;
+    }
+    .blog-post-content h2::after {
+      content: '';
+      width: 60px;
+      height: 4px;
+      background: var(--accent);
+      display: block;
+      margin-top: 0.5rem;
+      border-radius: 2px;
+    }
+    .blog-post-content p,
+    .blog-post-content ul,
+    .blog-post-content blockquote {
+      margin: 1.5rem 0;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .blog-post-content ul { list-style: none; padding-left: 1.5rem; }
+    .blog-post-content ul li {
+      position: relative;
+      margin: 0.75rem 0;
+      padding-left: 1.5rem;
+      color: var(--text-muted);
+    }
+    .blog-post-content ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+    .blog-post-content blockquote {
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.05);
+      border-left: 6px solid var(--secondary);
+      font-style: italic;
+      color: var(--text-muted);
+      border-radius: 8px;
+    }
+    .blog-post-content a {
+      display: inline-block;
+      margin-top: 2rem;
+      color: var(--secondary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .blog-post-content a:hover { color: var(--accent); }
+    .visible { opacity: 1 !important; transform: translateY(0) !important; }
+    footer {
+      background: rgba(10,26,46,0.9);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    footer a:hover { color: var(--primary); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 768px) {
+      .blog-post-title h1 { font-size: 2rem; }
+      .blog-post-content h2 { font-size: 1.6rem; }
+      .blog-post-header { height: 50vh; }
+      nav { flex-direction: column; gap: 1rem; }
+      .blog-post-content { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nebula-bg"></div>
+  <header>
+    <nav>
+      <a href="index.html"><i class='bx bx-arrow-back'></i> Back to Blogs</a>
+      <a href="#contact">Contact Us</a>
+    </nav>
+  </header>
+  <main>
+    <section class="blog-post-header">
+      <div class="blog-post-title">
+        <h1>Cultural Etiquette Around the World: Do's and Don'ts for Travelers</h1>
+        <div class="blog-post-meta">
+          <span><i class='bx bx-user'></i> Admin</span>
+          <span><i class='bx bx-calendar'></i> April 15, 2025</span>
+          <span><i class='bx bx-time'></i> 10 min read</span>
+        </div>
+      </div>
+    </section>
+    <section class="blog-post-content">
+      <p class="reveal">Navigating cultural norms respectfully can transform your travel experience from awkward mishaps to meaningful connections. From gestures that offend to rituals that fascinate, understanding etiquette prepares you to engage authentically and courteously.</p>
 
+      <h2 class="reveal">1. Greetings and Gestures</h2>
+      <p class="reveal">In Japan, a bow conveys respect, with deeper bows indicating greater reverence. In parts of the Middle East, a light handshake suffices; avoid using your left hand for greetings, as it’s considered unclean. In Thailand, the “wai”—palms together at chest level—is the customary greeting.</p>
+
+      <h2 class="reveal">2. Dress Codes and Modesty</h2>
+      <p class="reveal">Religious sites often require covered shoulders and knees—carry a scarf or sarong. In Muslim-majority countries, women may need to wear a headscarf; in India, modest tops and longer skirts or pants help you blend in and show respect. Beachwear is generally restricted to coastal areas—avoid bikinis in public towns.</p>
+
+      <h2 class="reveal">3. Dining Etiquette</h2>
+      <ul class="reveal">
+        <li>In Ethiopia, use your right hand to eat from communal dishes—never the left.</li>
+        <li>In France, keep hands visible (resting on table) and cut only one piece of bread at a time.</li>
+        <li>In Japan, slurping noodles signifies appreciation; avoid sticking chopsticks upright in rice, which resembles a funeral rite.</li>
+      </ul>
+
+      <h2 class="reveal">4. Gift-Giving Customs</h2>
+      <p class="reveal">In China, avoid giving clocks or sharp objects—these symbolize bad luck or severed relationships. Present gifts with both hands in Korea, and expect modest refusal before acceptance. In many Latin American cultures, small tokens like sweets are appreciated when visiting homes.</p>
+
+      <h2 class="reveal">5. Tipping Practices</h2>
+      <p class="reveal">Tipping is customary in the U.S. (15–20%), while in Japan it can be insulting—service is included. In Europe, rounding up or leaving small change suffices. Research local norms: over-tipping can offend, under-tipping can seem disrespectful.</p>
+
+      <blockquote class="reveal">“Respect for the rites of others is peace.” – Benito Juárez</blockquote>
+
+      <h2 class="reveal">6. Public Behavior and Noise</h2>
+      <p class="reveal">In Scandinavian countries, public silence is valued—keep voices low on public transport. In Latin America, expressive conversation and warm gestures are welcomed. Avoid public displays of affection in conservative regions; hold hands rather than kiss in public.</p>
+
+      <h2 class="reveal">7. Respecting Sacred Spaces</h2>
+      <p class="reveal">Remove footwear when entering homes, temples, or mosques in many Asian cultures. Observe photography rules—some temples prohibit photos of certain shrines. Keep voices hushed and avoid pointing feet towards altars in Buddhist sites.</p>
+
+      <h2 class="reveal">8. Queuing and Personal Space</h2>
+      <p class="reveal">In the U.K., orderly queues are sacrosanct—cutting in line causes outrage. In India or parts of the Middle East, queuing is more fluid; assertiveness may be needed. In Nordic countries, people appreciate ample personal space—avoid standing too close.</p>
+
+      <h2 class="reveal">9. Conversation Topics to Avoid</h2>
+      <ul class="reveal">
+        <li>Avoid political debates in politically sensitive regions.</li>
+        <li>Refrain from criticizing local customs—frame questions with curiosity, not judgment.</li>
+        <li>Steer clear of personal financial or marital status inquiries unless invited.</li>
+      </ul>
+
+      <h2 class="reveal">10. Environmental and Wildlife Etiquette</h2>
+      <p class="reveal">In Australia, respect wildlife habitats—keep distance from kangaroos and heed park regulations. In coral reef areas, avoid touching marine life or standing on corals. Carry out all trash in protected reserves and follow “leave no trace” principles.</p>
+
+      <p class="reveal">Mastering cultural etiquette not only prevents faux pas but also fosters deeper bonds and richer travel memories. Approach each new custom with humility and a willingness to learn—your respect will be remembered long after you’ve left.</p>
+
+      <a href="index.html"><i class='bx bx-arrow-back'></i> Back to Blogs</a>
+    </section>
+  </main>
+  <footer id="contact">
+    <p>© 2025 The World Tour Blog. All rights reserved. <a href="mailto:contact@worldtourblog.com">Contact Us</a></p>
+  </footer>
+  <script>
+    const nebulaBg = document.querySelector('.nebula-bg');
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'cosmic-particle';
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 10}s`;
+      particle.style.animationDuration = `${15 + Math.random() * 15}s`;
+      nebulaBg.appendChild(particle);
+    }
+    const revealItems = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealItems.forEach(item => observer.observe(item));
+  </script>
+</body>
+</html>
