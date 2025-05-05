@@ -1,29 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Magnificent Seven Wonders: A Journey Through Time</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seven Wonders of the World: Timeless Marvels</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff6f61;
+      --secondary: #4a90e2;
+      --accent: #f2c94c;
+      --bg-dark: #0a1a2e;
+      --bg-light: #f9f9f9;
+      --text-main: #ffffff;
+      --text-muted: #b0c4de;
+      --card-bg: rgba(255, 255, 255, 0.1);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.7;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      position: relative;
+    }
+    .nebula-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #1e3a8a 0%, #0a1a2e 70%);
+      z-index: -1;
+      overflow: hidden;
+    }
+    .nebula-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(255, 111, 97, 0.2));
+      opacity: 0.5;
+      mix-blend-mode: overlay;
+    }
+    .cosmic-particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: float 20s infinite linear;
+      pointer-events: none;
+    }
+    .cosmic-particle:nth-child(odd) { width: 2px; height: 2px; opacity: 0.6; }
+    .cosmic-particle:nth-child(even) { width: 3px; height: 3px; opacity: 0.4; }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); opacity: 0.8; }
+      50% { opacity: 0.3; }
+      100% { transform: translateY(-100vh) translateX(20px); opacity: 0.8; }
+    }
+    header {
+      background: rgba(10, 26, 46, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+    }
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+    nav a:hover { color: var(--accent); }
+    .blog-post-header {
+      height: 70vh;
+      background: url('https://i.ibb.co/2Z9jFGL/seven-wonders.jpg') center/cover no-repeat;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-main);
+    }
+    .blog-post-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+    }
+    .blog-post-title {
+      position: relative;
+      max-width: 900px;
+      padding: 0 1.5rem;
+      animation: fadeUp 1s ease-out;
+    }
+    .blog-post-title h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .blog-post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    .blog-post-meta span { display: flex; align-items: center; }
+    .blog-post-meta i { margin-right: 0.5rem; color: var(--accent); }
+    .blog-post-content {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    .blog-post-content h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin: 2rem 0 1rem;
+      position: relative;
+    }
+    .blog-post-content h2::after {
+      content: '';
+      width: 60px;
+      height: 4px;
+      background: var(--accent);
+      display: block;
+      margin-top: 0.5rem;
+      border-radius: 2px;
+    }
+    .blog-post-content p,
+    .blog-post-content ul,
+    .blog-post-content blockquote,
+    .blog-post-content img {
+      margin: 1.5rem 0;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .blog-post-content img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+    .blog-post-content img:hover { transform: scale(1.02); }
+    .blog-post-content ul { list-style: none; padding-left: 1.5rem; }
+    .blog-post-content ul li {
+      position: relative;
+      margin: 0.75rem 0;
+      padding-left: 1.5rem;
+      color: var(--text-muted);
+    }
+    .blog-post-content ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+    .blog-post-content blockquote {
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 6px solid var(--secondary);
+      font-style: italic;
+      color: var(--text-muted);
+      border-radius: 8px;
+    }
+    .blog-post-content a {
+      display: inline-block;
+      margin-top: 2rem;
+      color: var(--secondary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .blog-post-content a:hover { color: var(--accent); }
+    .visible { opacity: 1 !important; transform: translateY(0) !important; }
+    footer {
+      background: rgba(10, 26, 46, 0.9);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    footer a:hover { color: var(--primary); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 768px) {
+      .blog-post-title h1 { font-size: 2rem; }
+      .blog-post-content h2 { font-size: 1.6rem; }
+      .blog-post-header { height: 50vh; }
+      nav { flex-direction: column; gap: 1rem; }
+      .blog-post-content { padding: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="index.html">Home</a>
-            <!-- Add other nav links -->
-        </nav>
-    </header>
-    <main>
-        <article>
-            <h1>The Magnificent Seven Wonders: A Journey Through Time</h1>
-            <img src="https://source.unsplash.com/random/600x400/?seven,wonders" alt="Seven Wonders">
-            <p>The Seven Wonders of the World represent the most extraordinary man-made structures across different eras. Each tells a unique story of human ingenuity and ambition. From the Great Pyramid of Giza standing tall for millennia to the majesty of Machu Picchu nestled in the Andes, these sites are not merely tourist attractions but windows into our collective human achievement.</p>
-            <!-- Add more content, images, or sections as desired -->
-        </article>
-    </main>
-    <footer>
-        <!-- Footer content -->
-    </footer>
-    <script src="script.js"></script>
+  <div class="nebula-bg"></div>
+  <header>
+    <nav>
+      <a href="index.html"><i class='bx bx-arrow-back'></i> Back to Blogs</a>
+      <a href="#contact">Contact Us</a>
+    </nav>
+  </header>
+  <main>
+    <section class="blog-post-header">
+      <div class="blog-post-title">
+        <h1>Seven Wonders of the World: Timeless Marvels</h1>
+        <div class="blog-post-meta">
+          <span><i class='bx bx-user'></i> Rahul Sharma</span>
+          <span><i class='bx bx-calendar'></i> April 11, 2025</span>
+          <span><i class='bx bx-time'></i> 10 min read</span>
+        </div>
+      </div>
+    </section>
+    <section class="blog-post-content">
+      <p class="reveal">The <strong>Seven Wonders of the World</strong> are a collection of extraordinary architectural and natural landmarks that showcase human ingenuity and nature’s grandeur. From ancient marvels to modern masterpieces, these wonders captivate travelers and historians alike.</p>
+      <h2 class="reveal">Historical Significance</h2>
+      <p class="reveal">The concept of the Seven Wonders originated in ancient times, with lists compiled by Greek scholars like Antipater of Sidon. The original list included marvels like the Great Pyramid of Giza. In 2007, a global vote by the New7Wonders Foundation updated the list to reflect modern achievements, celebrating structures that continue to inspire awe.</p>
+      <img class="reveal" src="https://i.ibb.co/2Z9jFGL/seven-wonders.jpg" alt="Seven Wonders Collage">
+      <p class="reveal">These wonders represent the pinnacle of human creativity, engineering, and cultural heritage across different eras and civilizations.</p>
+      <h2 class="reveal">The Modern Seven Wonders</h2>
+      <p class="reveal">The current list of the Seven Wonders of the World, as recognized by the New7Wonders Foundation, includes:</p>
+      <ul class="reveal">
+        <li><strong>Great Wall of China:</strong> A colossal fortification stretching over 21,000 kilometers</li>
+        <li><strong>Petra, Jordan:</strong> An ancient city carved into rose-red cliffs</li>
+        <li><strong>Christ the Redeemer, Brazil:</strong> An iconic statue overlooking Rio de Janeiro</li>
+        <li><strong>Machu Picchu, Peru:</strong> The lost Incan city nestled in the Andes</li>
+        <li><strong>Chichen Itza, Mexico:</strong> A Mayan pyramid with astronomical precision</li>
+        <li><strong>Colosseum, Italy:</strong> Rome’s grand amphitheater of gladiatorial contests</li>
+        <li><strong>Taj Mahal, India:</strong> A stunning mausoleum of white marble</li>
+      </ul>
+      <img class="reveal" src="https://i.ibb.co/Y0WqX4F/seven-wonders-panorama.jpg" alt="Seven Wonders Panorama">
+      <h2 class="reveal">Visiting the Seven Wonders Today</h2>
+      <p class="reveal">Each wonder offers a unique experience, from exploring the ancient ruins of Petra to marveling at the intricate details of the Taj Mahal. Most are accessible to tourists, with guided tours, visitor centers, and local guides enhancing the experience. Seasonal events, such as festivals near Chichen Itza, add to their allure.</p>
+      <p class="reveal">Advance planning is essential, as some sites, like Machu Picchu, have entry restrictions to preserve their integrity.</p>
+      <blockquote class="reveal">"The Seven Wonders are not just monuments; they are stories of human ambition etched into stone and time." – Global Traveler</blockquote>
+      <h2 class="reveal">Personal Experience</h2>
+      <p class="reveal">Visiting the Taj Mahal at sunrise was a highlight of my travels. The way the marble glowed in the soft light felt almost otherworldly. Exploring the Colosseum’s ancient arches and imagining its vibrant past was equally humbling. Each wonder tells a unique story that connects us to history.</p>
+      <p class="reveal">Standing before these marvels, I felt a profound sense of awe at what humanity and nature can achieve together.</p>
+      <h2 class="reveal">Travel Tips</h2>
+      <ul class="reveal">
+        <li>Book tickets in advance for restricted sites like Machu Picchu</li>
+        <li>Hire local guides for deeper insights into each wonder’s history</li>
+        <li>Visit during off-peak seasons to avoid crowds</li>
+        <li>Respect preservation rules, such as no touching or climbing</li>
+        <li>Capture the sunrise or sunset for the best views and photos</li>
+      </ul>
+      <p class="reveal">The Seven Wonders of the World are more than destinations; they are testaments to human creativity and the enduring beauty of our planet. A journey to these marvels is a journey through time and culture.</p>
+      <a href="index.html"><i class='bx bx-arrow-back'></i> Back to Blogs</a>
+    </section>
+  </main>
+  <footer id="contact">
+    <p>© 2025 The World Tour Blog. All rights reserved. <a href="mailto:contact@worldtourblog.com">Contact Us</a></p>
+  </footer>
+  <script>
+    const nebulaBg = document.querySelector('.nebula-bg');
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'cosmic-particle';
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 10}s`;
+      particle.style.animationDuration = `${15 + Math.random() * 15}s`;
+      nebulaBg.appendChild(particle);
+    }
+    const revealItems = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealItems.forEach(item => observer.observe(item));
+  </script>
 </body>
 </html>
