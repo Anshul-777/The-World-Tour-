@@ -1,1 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meenakshi Temple: The Jewel of Madurai</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff6f61;
+      --secondary: #4a90e2;
+      --accent: #f2c94c;
+      --bg-dark: #0a1a2e;
+      --bg-light: #f9f9f9;
+      --text-main: #ffffff;
+      --text-muted: #b0c4de;
+      --card-bg: rgba(255, 255, 255, 0.1);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.7;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Nebula Background */
+    .nebula-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #1e3a8a 0%, #0a1a2e 70%);
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .nebula-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(255, 111, 97, 0.2));
+      opacity: 0.5;
+      mix-blend-mode: overlay;
+    }
+
+    .cosmic-particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: float 20s infinite linear;
+      pointer-events: none;
+    }
+
+    .cosmic-particle:nth-child(odd) {
+      width: 2px;
+      height: 2px;
+      opacity: 0.6;
+    }
+
+    .cosmic-particle:nth-child(even) {
+      width: 3px;
+      height: 3px;
+      opacity: 0.4;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); opacity: 0.8; }
+      50% { opacity: 0.3; }
+      100% { transform: translateY(-100vh) translateX(20px); opacity: 0.8; }
+    }
+
+    /* Header */
+    header {
+      background: rgba(10, 26, 46, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    /* Blog Header */
+    .blog-post-header {
+      height: 70vh;
+      background: url('https://i.ibb.co/j9zxz2NP/istockphoto-485572704-612x612.jpg') center/cover no-repeat;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-main);
+    }
+
+    .blog-post-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+    }
+
+    .blog-post-title {
+      position: relative;
+      max-width: 900px;
+      padding: 0 1.5rem;
+      animation: fadeUp 1s ease-out;
+    }
+
+    .blog-post-title h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .blog-post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .blog-post-meta span {
+      display: flex;
+      align-items: center;
+    }
+
+    .blog-post-meta i {
+      margin-right: 0.5rem;
+      color: var(--accent);
+    }
+
+    /* Blog Content */
+    .blog-post-content {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .blog-post-content h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin: 2rem 0 1rem;
+      position: relative;
+    }
+
+    .blog-post-content h2::after {
+      content: '';
+      width: 60px;
+      height: 4px;
+      background: var(--accent);
+      display: block;
+      margin-top: 0.5rem;
+      border-radius: 2px;
+    }
+
+    .blog-post-content p,
+    .blog-post-content ul,
+    .blog-post-content blockquote,
+    .blog-post-content img {
+      margin: 1.5rem 0;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .blog-post-content img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+
+    .blog-post-content img:hover {
+      transform: scale(1.02);
+    }
+
+    .blog-post-content ul {
+      list-style: none;
+      padding-left: 1.5rem;
+    }
+
+    .blog-post-content ul li {
+      position: relative;
+      margin: 0.75rem 0;
+      padding-left: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .blog-post-content ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+
+    .blog-post-content blockquote {
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 6px solid var(--secondary);
+      font-style: italic;
+      color: var(--text-muted);
+      border-radius: 8px;
+    }
+
+    .blog-post-content a {
+      display: inline-block;
+      margin-top: 2rem;
+      color: var(--secondary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .blog-post-content a:hover {
+      color: var(--accent);
+    }
+
+    .visible {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(10, 26, 46, 0.9);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: var(--primary);
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .blog-post-title h1 { font-size: 2rem; }
+      .blog-post-content h2 { font-size: 1.6rem; }
+      .blog-post-header { height: 50vh; }
+      nav { flex-direction: column; gap: 1rem; }
+      .blog-post-content { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nebula-bg"></div>
+
+  <header>
+    <nav>
+      <a href="index.html"><i class='bx bx-arrow-back'></i> Back to Blogs</a>
+      <a href="#contact">Contact Us</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="blog-post-header">
+      <div class="blog-post-title">
+        <h1>Meenakshi Temple: The Jewel of Madurai</h1>
+        <div class="blog-post-meta">
+          <span><i class='bx bx-user'></i> Rahul Sharma</span>
+          <span><i class='bx bx-calendar'></i> April 5, 2025</span>
+          <span><i class='bx bx-time'></i> 9 min read</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="blog-post-content">
+      <p class="reveal">Standing in the heart of Madurai, Tamil Nadu, the Meenakshi Temple is a marvel of Dravidian architecture and a living symbol of devotion, culture, and art. Dedicated to Goddess Meenakshi (a form of Parvati) and her consort Sundareswarar (Lord Shiva), this vibrant and intricately sculpted temple attracts millions of devotees and tourists every year.</p>
+
+      <h2 class="reveal">Historical Significance</h2>
+      <p class="reveal">The origins of Meenakshi Temple trace back to over 2,000 years, although the current structure was extensively rebuilt by the Nayak rulers in the 16th century, particularly under King Tirumala Nayaka. It became a major center of Tamil culture, religion, and education during this period. The temple complex symbolizes the spiritual and architectural zenith of South India.</p>
+      <img class="reveal" src="https://i.ibb.co/j9zxz2NP/istockphoto-485572704-612x612.jpg" alt="Meenakshi Temple Gopuram">
+      <p class="reveal">The temple is not just a religious space but a cultural hub, hosting music, dance, and festivals like the famed Meenakshi Tirukalyanam — the divine wedding ceremony of Meenakshi and Sundareswarar.</p>
+
+      <h2 class="reveal">Architectural Marvel</h2>
+      <p class="reveal">Covering 14 acres, the temple complex features:</p>
+      <ul class="reveal">
+        <li><strong>Gopurams:</strong> Towering gateways richly adorned with thousands of colorful sculptures of gods, goddesses, and mythical creatures</li>
+        <li><strong>Thousand Pillar Hall:</strong> An architectural wonder filled with stone columns, each carved with incredible detail</li>
+        <li><strong>Golden Lotus Tank:</strong> A sacred pond within the complex, used by devotees for purification</li>
+        <li><strong>Meenakshi Shrine:</strong> The sanctum where the goddess is enshrined in dazzling jewelry and flowers</li>
+      </ul>
+
+      <h2 class="reveal">Visiting Meenakshi Today</h2>
+      <p class="reveal">The temple is open daily, with early morning and evening poojas being the most spiritually charged times to visit. Photography is restricted inside the inner sanctums, but the outer areas offer stunning visuals.</p>
+      <img class="reveal" src="https://i.ibb.co/DDBRVRt6/c61a2b8259c57ff86adfd5f  <h2 class="reveal">Personal Experience</h2>
+      <p class="reveal">As I walked beneath the towering gopurams, I was struck by the sheer detail and color. The Thousand Pillar Hall was mesmerizing — each column had its own story. The divine energy in the main sanctum was palpable, with chanting and fragrance of jasmine and camphor filling the air.</p>
+      <p class="reveal">Even in the crowd, there was a deep sense of peace. Sitting beside the Golden Lotus Tank, I reflected on centuries of devotion that had taken place right where I sat.</p>
+
+      <h2 class="reveal">Travel Tips</h2>
+      <ul class="reveal">
+        <li>Dress modestly as it's a religious site — traditional Indian attire is best</li>
+        <li>Visit early morning or late evening for a peaceful experience</li>
+        <li>Hire a temple guide to understand the complex symbolism and history</li>
+        <li>Footwear is not allowed beyond the entrance – be prepared to walk barefoot</li>
+        <li>Don’t miss the temple’s evening rituals and musical performances if available</li>
+      </ul>
+
+      <p class="reveal">Whether you're spiritual or simply love history and art, the Meenakshi Temple is a must-visit gem that showcases the soul of South India. It’s not just a destination — it’s a divine experience.</p>
+
+      <a href="index.html"><i class='bx bx-arrow-back'></i> Back to Blogs</a>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <p>© 2025 The World Tour Blog. All rights reserved. <a href="mailto:contact@worldtourblog.com">Contact Us</a></p>
+  </footer>
+
+  <script>
+    // Create Nebula Particles
+    const nebulaBg = document.querySelector('.nebula-bg');
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'cosmic-particle';
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 10}s`;
+      particle.style.animationDuration = `${15 + Math.random() * 15}s`;
+      nebulaBg.appendChild(particle);
+    }
+
+    // Smooth Fade-Up Animation
+    const revealItems = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    revealItems.forEach(item => observer.observe(item));
+  </script>
+</body>
+</html>
