@@ -1,1 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget Travel: How to See the World Without Breaking the Bank</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff6f61;
+      --secondary: #4a90e2;
+      --accent: #f2c94c;
+      --bg-dark: #0a1a2e;
+      --bg-light: #f9f9f9;
+      --text-main: #ffffff;
+      --text-muted: #b0c4de;
+      --card-bg: rgba(255, 255, 255, 0.1);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.7;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      position: relative;
+    }
+    .nebula-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #1e3a8a 0%, #0a1a2e 70%);
+      z-index: -1;
+      overflow: hidden;
+    }
+    .nebula-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(74,144,226,0.2), rgba(255,111,97,0.2));
+      opacity: 0.5;
+      mix-blend-mode: overlay;
+    }
+    .cosmic-particle {
+      position: absolute;
+      background: rgba(255,255,255,0.8);
+      border-radius: 50%;
+      animation: float 20s infinite linear;
+      pointer-events: none;
+    }
+    .cosmic-particle:nth-child(odd) { width: 2px; height: 2px; opacity: 0.6; }
+    .cosmic-particle:nth-child(even) { width: 3px; height: 3px; opacity: 0.4; }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); opacity: 0.8; }
+      50% { opacity: 0.3; }
+      100% { transform: translateY(-100vh) translateX(20px); opacity: 0.8; }
+    }
+    header {
+      background: rgba(10,26,46,0.9);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+    }
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+    nav a:hover { color: var(--accent); }
+    .blog-post-header {
+      height: 70vh;
+      background: url('https://i.ibb.co/MkJYBhwZ/fac516285aa8f58845c710bf042a5911.jpg') center/cover no-repeat;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-main);
+    }
+    .blog-post-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.7));
+    }
+    .blog-post-title {
+      position: relative;
+      max-width: 900px;
+      padding: 0 1.5rem;
+      animation: fadeUp 1s ease-out;
+    }
+    .blog-post-title h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .blog-post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    .blog-post-meta span { display: flex; align-items: center; }
+    .blog-post-meta i { margin-right: 0.5rem; color: var(--accent); }
+    .blog-post-content {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    .blog-post-content h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin: 2rem 0 1rem;
+      position: relative;
+    }
+    .blog-post-content h2::after {
+      content: '';
+      width: 60px;
+      height: 4px;
+      background: var(--accent);
+      display: block;
+      margin-top: 0.5rem;
+      border-radius: 2px;
+    }
+    .blog-post-content p,
+    .blog-post-content ul,
+    .blog-post-content blockquote {
+      margin: 1.5rem 0;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .blog-post-content ul { list-style: none; padding-left: 1.5rem; }
+    .blog-post-content ul li {
+      position: relative;
+      margin: 0.75rem 0;
+      padding-left: 1.5rem;
+      color: var(--text-muted);
+    }
+    .blog-post-content ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+    .blog-post-content blockquote {
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.05);
+      border-left: 6px solid var(--secondary);
+      font-style: italic;
+      color: var(--text-muted);
+      border-radius: 8px;
+    }
+    .blog-post-content a {
+      display: inline-block;
+      margin-top: 2rem;
+      color: var(--secondary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .blog-post-content a:hover { color: var(--accent); }
+    .visible { opacity: 1 !important; transform: translateY(0) !important; }
+    footer {
+      background: rgba(10,26,46,0.9);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    footer a:hover { color: var(--primary); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 768px) {
+      .blog-post-title h1 { font-size: 2rem; }
+      .blog-post-content h2 { font-size: 1.6rem; }
+      .blog-post-header { height: 50vh; }
+      nav { flex-direction: column; gap: 1rem; }
+      .blog-post-content { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nebula-bg"></div>
+  <header>
+    <nav>
+      <a href="index.html"><i class='bx bx-arrow-back'></i> Back to Blogs</a>
+      <a href="#contact">Contact Us</a>
+    </nav>
+  </header>
+  <main>
+    <section class="blog-post-header">
+      <div class="blog-post-title">
+        <h1>Budget Travel: How to See the World Without Breaking the Bank</h1>
+        <div class="blog-post-meta">
+          <span><i class='bx bx-user'></i> Admin</span>
+          <span><i class='bx bx-calendar'></i> April 27, 2025</span>
+          <span><i class='bx bx-time'></i> 11 min read</span>
+        </div>
+      </div>
+    </section>
+    <section class="blog-post-content">
+      <p class="reveal">Travel on a budget doesn’t mean skimping on experiences—it’s about smart planning, resourcefulness, and embracing local culture. From scoring flight deals to uncovering hidden gems, this guide will equip you with strategies to stretch every dollar and make your adventures unforgettable.</p>
+      <h2 class="reveal">1. Travel Off-Peak and Shoulder Seasons</h2>
+      <p class="reveal">Avoid high-season crowds and inflated prices by choosing off-peak or shoulder months. Not only will flights and accommodations be cheaper, but you’ll also enjoy fewer queues and a more authentic local atmosphere. Research regional events to sidestep unexpected price spikes.</p>
 
+      <h2 class="reveal">2. Use Flexible Date Searches</h2>
+      <p class="reveal">Flight search engines with “±3 days” or monthly view calendars reveal the cheapest travel windows. Combine budget carriers with strategic layovers—sometimes booking two separate legs saves hundreds, even with added time.</p>
+
+      <h2 class="reveal">3. Leverage Local Transport</h2>
+      <p class="reveal">Rail passes, regional buses, and shared vans often undercut international chains. In many countries, local minibuses or tuk-tuks are both affordable and an immersive way to travel. Always verify safety records and insurance coverage.</p>
+
+      <h2 class="reveal">4. Opt for Budget-Friendly Accommodations</h2>
+      <p class="reveal">Hostels, guesthouses, and homestays provide not only savings but cultural immersion. Many hostels offer free walking tours, language exchanges, and community dinners. Consider house-sitting or work-exchange programs in exchange for lodging and meals.</p>
+      <ul class="reveal">
+        <li>Check reviews for cleanliness and location over flashy amenities.</li>
+        <li>Book directly with small family-run properties to negotiate lower rates.</li>
+      </ul>
+
+      <h2 class="reveal">5. Cook and Eat Like a Local</h2>
+      <p class="reveal">Street markets and neighborhood cafés offer authentic cuisine at a fraction of tourist-trap prices. Stock up on fresh fruits, bread, and local snacks for on-the-go meals. If your accommodation has a kitchenette, shop at open-air markets and prepare simple dishes.</p>
+
+      <h2 class="reveal">6. Hunt Free and Low-Cost Activities</h2>
+      <p class="reveal">Many museums have free-entry days or donation-based admission. Public parks, hiking trails, and walking tours led by local volunteers provide cost-free cultural experiences. Use city tourism websites for calendars of festivals, concerts, and exhibitions.</p>
+
+      <h2 class="reveal">7. Bundle and Book in Advance</h2>
+      <p class="reveal">Combining train passes, attraction tickets, and airport transfers into one purchase often unlocks discounts. Advance booking for popular attractions prevents premium “on-the-day” rates and sold-out frustrations.</p>
+
+      <h2 class="reveal">8. Embrace Technology</h2>
+      <p class="reveal">Apps like Skyscanner, Rome2Rio, and Hostelworld aggregate deals across providers. Use VPNs to compare regional pricing, clear cookies to avoid dynamic fare hikes, and set fare alerts for your desired routes.</p>
+
+      <blockquote class="reveal">“The best journeys aren’t measured in miles or money, but in moments that take your breath away.” – Budget Traveler Anonymous</blockquote>
+
+      <h2 class="reveal">9. Manage Your Money Wisely</h2>
+      <p class="reveal">Avoid foreign transaction fees by using travel-friendly credit cards. Carry a small amount of local cash for markets and remote areas. Track expenses daily to adjust habits—overspending on one splurge means skipping another memorable activity.</p>
+
+      <h2 class="reveal">10. Slow Down and Stay Longer</h2>
+      <p class="reveal">Extended stays in one place reduce transport costs and unlock weekly or monthly accommodation discounts. You’ll build connections, discover off-the-beaten-path spots, and truly absorb the local culture—often the most rewarding part of travel.</p>
+      <ul class="reveal">
+        <li>Negotiate long-term rates with hosts directly.</li>
+        <li>Volunteer or teach short courses to earn perks like free room and board.</li>
+        <li>Use co-working spaces that offer day passes for digital nomads.</li>
+      </ul>
+
+      <p class="reveal">By combining these tactics—flexible planning, local immersion, and strategic spending—you’ll uncover adventures that rival high-budget trips, all while keeping your wallet happy. Happy travels!</p>
+      <a href="index.html"><i class='bx bx-arrow-back'></i> Back to Blogs</a>
+    </section>
+  </main>
+  <footer id="contact">
+    <p>© 2025 The World Tour Blog. All rights reserved. <a href="mailto:contact@worldtourblog.com">Contact Us</a></p>
+  </footer>
+  <script>
+    const nebulaBg = document.querySelector('.nebula-bg');
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'cosmic-particle';
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 10}s`;
+      particle.style.animationDuration = `${15 + Math.random() * 15}s`;
+      nebulaBg.appendChild(particle);
+    }
+    const revealItems = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealItems.forEach(item => observer.observe(item));
+  </script>
+</body>
+</html>
