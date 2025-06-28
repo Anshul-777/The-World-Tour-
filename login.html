@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #0f2027;
+      background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .form-box {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.3);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      font-size: 14px;
+      display: block;
+      margin-top: 15px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #00c6ff;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+    }
+    .google-btn {
+      background: #fff;
+      color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .bottom-text {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .bottom-text a {
+      color: #00c6ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <form action="handlers/login_handler.php" method="POST">
+      <h2>Login</h2>
+      <label for="email">Email</label>
+      <input type="email" name="email" required><label for="password">Password</label>
+  <input type="password" name="password" required>
+
+  <button type="submit">Login</button>
+
+  <button class="google-btn" type="button" onclick="location.href='oauth/google_login.php'">
+    <img src="https://img.icons8.com/color/16/000000/google-logo.png" /> Login with Google
+  </button>
+
+  <div class="bottom-text">Don't have an account? <a href="signup.php">Sign Up</a></div>
+</form>
+
+  </div>
+</body>
+</html>￼Enter
