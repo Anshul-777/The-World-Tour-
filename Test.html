@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Tour - Explore the World</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <div class="logo-glow"></div>
+                        <i class='bx bx-globe'></i>
+                    </div>
+                    <span class="logo-text">WorldTour</span>
+                </a>
+                
+                <div class="header-controls">
+                    <button class="btn btn-icon" id="theme-toggle">
+                        <i class='bx bx-moon'></i>
+                    </button>
+                    
+                    <?php if (!isset($_SESSION['user_id'])): ?>
+                    <div class="auth-buttons">
+                        <a href="login.php" class="btn btn-ghost">Login</a>
+                        <a href="signup.php" class="btn btn-primary">Sign Up</a>
+                    </div>
+                    <?php else: 
+                        $user = getUser($_SESSION['user_id']);
+                    ?>
+                    <div class="user-nav">
+                        <div class="user-dropdown">
+                            <div class="user-dropdown-trigger">
+                                <img src="<?= $user['avatar'] ?>" alt="<?= $user['name'] ?>" class="user-avatar">
+                                <span><?= $user['name'] ?></span>
+                                <i class='bx bx-chevron-down'></i>
+                            </div>
+                            <div class="user-dropdown-menu">
+                                <a href="profile.php" class="dropdown-item">
+                                    <i class='bx bx-user'></i> Profile
+                                </a>
+                                <a href="create_blog.php" class="dropdown-item">
+                                    <i class='bx bx-edit'></i> Create Blog
+                                </a>
+                                <a href="logout.php" class="dropdown-item">
+                                    <i class='bx bx-log-out'></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+            
+            <div class="navigation-container">
+                <nav class="main-nav row-1">
+                    <a href="#home" class="nav-link active" data-section="home">Home</a>
+                    <a href="#features" class="nav-link" data-section="features">Features</a>
+                    <a href="blogs.php" class="nav-link">Blogs</a>
+                    <a href="#vr-tours" class="nav-link" data-section="vr-tours">Virtual Reality</a>
+                </nav>
+                
+                <nav class="main-nav row-2">
+                    <a href="community.php" class="nav-link">Community</a>
+                    <a href="#articles" class="nav-link" data-section="articles">Articles</a>
+                    <a href="#about" class="nav-link" data-section="about">About</a>
+                    <a href="#help" class="nav-link" data-section="help">Help</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section-content active">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Explore the World Through Stories</h1>
+                        <p class="hero-description">Discover captivating travel experiences and immersive virtual reality tours from around the globe</p>
+                        <div class="hero-buttons">
+                            <a href="blogs.php" class="btn btn-primary" id="read-blogs-btn">Explore the Stories</a>
+                            <a href="create_blog.php" class="btn btn-outline" id="create-blog-btn">Share your Experiences</a>
+                            <button class="btn btn-outline" id="vr-button">Virtual Reality</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Blogs Section -->
+            <section class="blogs-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Featured Travel Blogs</h2>
+                        <p>Discover captivating stories and travel guides from our community of passionate explorers</p>
+                    </div>
+                    
+                    <div class="blog-grid">
+                        <?php
+                        $stmt = $pdo->query("
+                            SELECT b.*, u.name as author, u.avatar as author_avatar 
+                            FROM blogs b 
+                            JOIN users u ON b.user_id = u.id 
+                            ORDER BY b.created_at DESC 
+                            LIMIT 6
+                        ");
+                        while ($blog = $stmt->fetch()):
+                        ?>
+                        <div class="blog-card">
+                            <div class="blog-image">
+                                <img src="<?= $blog['main_image'] ?>" alt="<?= $blog['title'] ?>">
+                                <div class="blog-image-overlay"></div>
+                                <div class="blog-category"><?= $blog['category'] ?></div>
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-meta">
+                                    <span><?= date('F j, Y', strtotime($blog['created_at'])) ?></span>
+                                    <span class="blog-views">
+                                        <i class='bx bx-show'></i> <?= rand(100, 500) ?>
+                                    </span>
+                                </div>
+                                <h3 class="blog-title"><?= $blog['title'] ?></h3>
+                                <p class="blog-excerpt"><?= substr(strip_tags($blog['content']), 0, 100) ?>...</p>
+                                <div class="blog-footer">
+                                    <div class="blog-author">
+                                        <div class="author-avatar">
+                                            <img src="<?= $blog['author_avatar'] ?>" alt="<?= $blog['author'] ?>">
+                                        </div>
+                                        <span class="author-name"><?= $blog['author'] ?></span>
+                                    </div>
+                                    <a href="view_blog.php?id=<?= $blog['id'] ?>" class="read-more">
+                                        Read More <i class='bx bx-right-arrow-alt'></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endwhile; ?>
+                    </div>
+                    
+                    <div class="section-footer">
+                        <a href="blogs.php" class="btn btn-primary btn-large" id="explore-blogs-btn">
+                            Explore All Blogs <i class='bx bx-right-arrow-alt'></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Features Section -->
+            <section class="features-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Explore Our Features</h2>
+                        <p>Discover the unique features that make our travel platform the perfect companion for your global adventures</p>
+                    </div>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class='bx bx-globe'></i>
+                            </div>
+                            <h3 class="feature-title">Global Travel Blogs</h3>
+                            <p class="feature-description">Discover user-generated content featuring travel blogs from around the world</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class='bx bx-headphone'></i>
+                            </div>
+                            <h3 class="feature-title">Immersive VR Tours</h3>
+                            <p class="feature-description">Coming soon: 360° gamified fixed-position VR experiences</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class='bx bx-edit'></i>
+                            </div>
+                            <h3 class="feature-title">Create Your Own Blog</h3>
+                            <p class="feature-description">Share your travel experiences with rich content and images</p>
+                        </div>
+                    </div>
+                    
+                    <div class="section-footer">
+                        <a href="#features" class="btn btn-primary btn-large" id="learn-more-btn">
+                            Learn More <i class='bx bx-right-arrow-alt'></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- VR Tours Section -->
+            <section class="blogs-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Virtual Reality Tours</h2>
+                        <p>Experience immersive 360° tours of breathtaking destinations from the comfort of your home</p>
+                    </div>
+
+                    <div class="vr-placeholder">
+                        <i class='bx bx-headphone'></i>
+                        <h3>Coming Soon: Immersive Virtual Reality Tours</h3>
+                        <p>We're working hard to bring you captivating 360° virtual tours of the world's most beautiful destinations. Soon, you'll be able to explore iconic landmarks, hidden gems, and breathtaking landscapes without leaving your home.</p>
+                        <button class="btn btn-primary" id="vr-notify-btn">Notify Me When Available</button>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="section-content">
+            <section class="features-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>World Tour Features</h2>
+                        <p>Discover the unique features that make our travel platform the perfect companion for your global adventures</p>
+                    </div>
+                    
+                    <div class="features-grid">
+                        <?php
+                        $features = [
+                            ['icon' => 'bx bx-globe', 'title' => 'Global Travel Blogs', 'description' => 'Discover user-generated content featuring travel blogs from around the world'],
+                            ['icon' => 'bx bx-headphone', 'title' => 'Immersive VR Tours', 'description' => 'Coming soon: 360° gamified fixed-position VR experiences'],
+                            ['icon' => 'bx bx-edit', 'title' => 'Create Your Own Blog', 'description' => 'Share your travel experiences with rich content and images'],
+                            ['icon' => 'bx bx-group', 'title' => 'Community Connection', 'description' => 'Connect with fellow travelers and share experiences'],
+                            ['icon' => 'bx bx-message-rounded-dots', 'title' => 'Travel Companion', 'description' => 'Get travel advice from our AI chatbot'],
+                            ['icon' => 'bx bx-lock', 'title' => 'Secure Accounts', 'description' => 'Your data and content are always protected']
+                        ];
+                        
+                        foreach ($features as $feature): ?>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class='<?= $feature['icon'] ?>'></i>
+                            </div>
+                            <h3 class="feature-title"><?= $feature['title'] ?></h3>
+                            <p class="feature-description"><?= $feature['description'] ?></p>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section-content">
+            <section class="about-section">
+                <div class="container">
+                    <div class="about-header">
+                        <h2>About World Tour</h2>
+                        <p>Learn about our mission, vision, and the team behind World Tour</p>
+                    </div>
+
+                    <div class="mission-section">
+                        <div class="mission-content">
+                            <h3 class="mission-title">
+                                <i class='bx bx-target-lock'></i> Our Mission
+                            </h3>
+                            <p>At World Tour, our mission is to connect travelers around the world through shared experiences and stories. We believe that travel is not just about visiting new places, but about understanding different cultures, meeting new people, and gaining new perspectives.</p>
+                        </div>
+                        <div class="vision-content">
+                            <h3 class="vision-title">
+                                <i class='bx bx-bulb'></i> Our Vision
+                            </h3>
+                            <p>Our vision is to build the most comprehensive and immersive travel community platform in the world. We're working toward a future where anyone can experience the wonders of global travel, even if they can't physically visit every destination.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Help Section -->
+        <section id="help" class="section-content">
+            <section class="help-section">
+                <div class="container">
+                    <div class="help-header">
+                        <h2>Help Center</h2>
+                        <p>Find answers to your questions and get support</p>
+                    </div>
+
+                    <div class="faq-section">
+                        <h3>Frequently Asked Questions</h3>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>How do I create a blog post?</span>
+                                <i class='bx bx-chevron-down'></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>To create a blog post, sign up for an account or log in if you already have one. Then click on the "Share your Experiences" button on the homepage or the "Create Blog" option in your user menu. Fill in the required fields including title, content, location, and upload images to share your travel experience.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>When will the Virtual Reality tours be available?</span>
+                                <i class='bx bx-chevron-down'></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>We're currently developing our Virtual Reality tour feature, which will be available in the coming months. You can click the "Notify Me When Available" button in the VR section to be among the first to know when we launch this feature.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feedback-section">
+                        <div class="feedback-form">
+                            <h3>Rate Your Experience</h3>
+                            <div class="rating-stars" id="rating-stars">
+                                <i class='bx bx-star star' data-value="1"></i>
+                                <i class='bx bx-star star' data-value="2"></i>
+                                <i class='bx bx-star star' data-value="3"></i>
+                                <i class='bx bx-star star' data-value="4"></i>
+                                <i class='bx bx-star star' data-value="5"></i>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="feedback-subject">Subject</label>
+                                <input type="text" class="form-input" id="feedback-subject" placeholder="Enter subject">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="feedback-message">Your Feedback</label>
+                                <textarea class="form-input form-textarea" id="feedback-message" placeholder="Share your thoughts or suggestions"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="feedback-email">Email (optional)</label>
+                                <input type="email" class="form-input" id="feedback-email" placeholder="your@email.com">
+                            </div>
+
+                            <button class="btn btn-primary btn-large" id="submit-feedback-btn">Submit Feedback</button>
+                        </div>
+
+                        <div class="contact-info">
+                            <h3>Contact Us</h3>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class='bx bx-envelope'></i>
+                                </div>
+                                <div>
+                                    <h4>Email</h4>
+                                    <p>contact@worldtour.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About WorldTour</h3>
+                    <p>Explore the world through stories and immersive virtual reality tours from global travelers.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="blogs.php">Blogs</a></li>
+                        <li><a href="#vr-tours">VR Tours</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 WorldTour. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Travel Assistant Chatbot -->
+    <div class="travel-assistant" id="travel-assistant">
+        <button class="chat-button" id="chat-button">
+            <i class='bx bx-message-rounded-dots'></i>
+        </button>
+        
+        <div class="assistant-window" id="assistant-window" style="display: none;">
+            <div class="assistant-header">
+                <div class="assistant-title">
+                    <div class="assistant-avatar">
+                        <i class='bx bx-sparkles'></i>
+                    </div>
+                    <h3>Travel Companion</h3>
+                </div>
+                <div class="assistant-controls">
+                    <button class="btn-minimize" id="assistant-minimize">
+                        <i class='bx bx-minus-circle'></i>
+                    </button>
+                    <button class="btn-close" id="assistant-close">
+                        <i class='bx bx-x'></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="assistant-body">
+                <div class="assistant-messages" id="assistant-messages">
+                    <div class="message assistant">
+                        <div class="message-content">
+                            👋 Hi there! I'm your AI travel companion. Ask me any travel questions or recommendations for your next adventure!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="assistant-footer">
+                <form class="assistant-form" id="assistant-form">
+                    <textarea class="assistant-input" id="assistant-input" placeholder="Ask about travel destinations..."></textarea>
+                    <button type="submit" class="btn btn-send">
+                        <i class='bx bx-send'></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- VR Notification Modal -->
+    <div class="modal-overlay" id="vr-notification-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Get Notified</h3>
+                <button class="modal-close" id="vr-notification-modal-close">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>We'll notify you as soon as our Virtual Reality tours are available. Please enter your email to join the waitlist.</p>
+                <form id="vr-notification-form">
+                    <div class="form-group">
+                        <label class="form-label" for="vr-notification-email">Email</label>
+                        <input type="email" class="form-input" id="vr-notification-email" placeholder="your@email.com" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large" style="width: 100%;">Notify Me</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cosmic particles background -->
+    <div class="cosmic-particles" id="cosmic-particles"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
